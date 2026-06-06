@@ -1,0 +1,1676 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0F1117;--bg2:#161B27;--bg3:#1E2535;--bg4:#252D42;
+  --border:#2A3350;--border2:#3A4568;
+  --txt:#E8EBF4;--txt2:#9AA3BF;--txt3:#5A6480;
+  --blue:#4F8EF7;--blue2:#3B7AE8;--blue3:#1A3A7A;
+  --green:#2ECC9A;--green2:#1BA87A;--green3:#0D4A35;
+  --amber:#F5A623;--amber2:#E09010;--amber3:#5A3800;
+  --red:#F05252;--red2:#D43A3A;--red3:#4A1515;
+  --purple:#8B5CF6;--purple2:#7340E0;--purple3:#2D1A60;
+  --teal:#06B6D4;--teal2:#0596AE;--teal3:#013A45;
+  --sidebar:220px;--topbar:56px;
+  font-family:'DM Sans',sans-serif;
+}
+body{background:var(--bg);color:var(--txt);min-height:600px;overflow-x:hidden}
+
+/* AUTH — 60/40 enterprise layout */
+.auth-screen{min-height:100vh;display:flex;align-items:stretch;background:var(--bg)}
+
+/* ── LEFT PANEL 60% ── */
+.auth-left{
+  flex:0 0 60%;width:60%;background:var(--bg2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:center;padding:48px 56px;
+  position:relative;overflow:hidden;
+}
+/* layered grid bg */
+.auth-left::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(135deg,rgba(79,142,247,.06) 0%,transparent 60%),
+    repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(79,142,247,.035) 47px,rgba(79,142,247,.035) 48px),
+    repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(79,142,247,.035) 47px,rgba(79,142,247,.035) 48px);
+  pointer-events:none;
+}
+/* glowing orb accent */
+.auth-left::after{
+  content:'';position:absolute;top:-80px;left:-80px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(79,142,247,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* brand row */
+.auth-brand{display:flex;align-items:center;gap:14px;margin-bottom:32px;position:relative;z-index:1}
+.auth-logo{
+  width:52px;height:52px;background:linear-gradient(135deg,var(--blue),#2a5ec4);
+  border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:800;color:#fff;flex-shrink:0;
+  box-shadow:0 4px 20px rgba(79,142,247,.35);letter-spacing:-.5px;
+}
+.auth-brand-text h1{font-size:22px;font-weight:700;color:var(--txt);line-height:1.1;letter-spacing:-.3px}
+.auth-brand-text p{font-size:12px;color:var(--txt3);margin-top:3px;letter-spacing:.2px}
+
+/* tagline divider */
+.auth-tagline{
+  font-size:13px;font-weight:500;color:var(--txt2);
+  border-left:3px solid var(--blue);padding-left:12px;
+  margin-bottom:28px;line-height:1.5;position:relative;z-index:1;
+}
+
+/* workflow visualization */
+.auth-workflow{position:relative;z-index:1;margin-bottom:28px}
+.auth-workflow-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--txt3);margin-bottom:14px}
+.auth-wf-steps{display:flex;flex-direction:column;gap:0}
+.auth-wf-step{display:flex;align-items:center;gap:12px;position:relative}
+.auth-wf-step:not(:last-child)::after{
+  content:'';position:absolute;left:12px;top:28px;
+  width:2px;height:18px;background:linear-gradient(to bottom,var(--blue),rgba(79,142,247,.2));
+}
+.auth-wf-dot{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;
+  background:var(--blue3);color:var(--blue);border:1.5px solid var(--blue);
+  box-shadow:0 0 10px rgba(79,142,247,.2);
+}
+.auth-wf-label{font-size:12px;color:var(--txt2);padding:6px 0}
+.auth-wf-step:nth-child(1) .auth-wf-dot{background:rgba(79,142,247,.15);color:var(--blue);border-color:var(--blue)}
+.auth-wf-step:nth-child(3) .auth-wf-dot{background:rgba(46,204,154,.12);color:var(--green);border-color:var(--green2)}
+.auth-wf-step:nth-child(3) .auth-wf-label{color:var(--green)}
+.auth-wf-step:nth-child(4) .auth-wf-dot{background:rgba(245,166,35,.12);color:var(--amber);border-color:var(--amber2)}
+.auth-wf-step:nth-child(5) .auth-wf-dot{background:rgba(139,92,246,.12);color:var(--purple);border-color:var(--purple2)}
+.auth-wf-step:nth-child(6) .auth-wf-dot{background:rgba(6,182,212,.12);color:var(--teal);border-color:var(--teal2)}
+
+/* KPI cards strip */
+.auth-kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:28px;position:relative;z-index:1}
+.auth-kpi-card{
+  background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;text-align:center;
+  transition:border-color .2s,transform .2s;
+}
+.auth-kpi-card:hover{border-color:var(--blue);transform:translateY(-2px)}
+.auth-kpi-val{font-size:18px;font-weight:700;color:var(--txt);line-height:1}
+.auth-kpi-lbl{font-size:10px;color:var(--txt3);margin-top:4px;line-height:1.3}
+
+/* feature list + demo creds row */
+.auth-bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;position:relative;z-index:1}
+
+.auth-features{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px}
+.auth-features-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--txt3);margin-bottom:10px}
+.auth-feature-item{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px;color:var(--txt2)}
+.auth-feature-icon{color:var(--green);font-size:13px;flex-shrink:0}
+
+.auth-demo-creds{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px}
+.auth-demo-title{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.demo-row{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-radius:6px;cursor:pointer;transition:background .15s;margin-bottom:2px}
+.demo-row:hover{background:var(--bg4)}
+.demo-row:hover .demo-email{color:var(--blue)}
+.demo-email{font-size:11px;color:var(--txt2);font-family:'DM Mono',monospace}
+.demo-role{font-size:10px;color:var(--txt3);background:var(--bg4);padding:2px 6px;border-radius:4px}
+
+/* ── RIGHT PANEL 40% ── */
+.auth-right{
+  flex:0 0 40%;width:40%;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;padding:48px 40px;background:var(--bg);
+  position:relative;overflow:hidden;
+}
+.auth-right::before{
+  content:'';position:absolute;bottom:-120px;right:-80px;
+  width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle,rgba(79,142,247,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* glassmorphism card */
+.auth-card{
+  width:100%;max-width:380px;
+  background:rgba(22,27,39,.75);
+  border:1px solid var(--border2);
+  border-radius:16px;padding:32px 30px;
+  backdrop-filter:blur(20px);
+  box-shadow:0 8px 40px rgba(0,0,0,.4),0 1px 0 rgba(255,255,255,.04) inset;
+  position:relative;z-index:1;
+}
+.auth-card-header{margin-bottom:24px}
+.auth-card-header h2{font-size:20px;font-weight:700;color:var(--txt);letter-spacing:-.3px}
+.auth-card-header p{font-size:12px;color:var(--txt3);margin-top:4px}
+
+.auth-tab-row{display:flex;gap:0;margin-bottom:22px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:3px}
+.auth-tab{flex:1;text-align:center;padding:8px;border-radius:6px;font-size:12.5px;cursor:pointer;color:var(--txt3);transition:all .2s;font-weight:500}
+.auth-tab.active{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(79,142,247,.3)}
+
+.auth-form{display:none}
+.auth-form.active{display:block;animation:fadeSlideIn .2s ease}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.auth-field{margin-bottom:16px}
+.auth-label{font-size:11px;font-weight:600;color:var(--txt3);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
+.auth-input-wrap{position:relative}
+.auth-input{
+  width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+  padding:11px 14px;color:var(--txt);font-size:13.5px;
+  font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.auth-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,142,247,.12)}
+.auth-input::placeholder{color:var(--txt3)}
+.auth-input.error{border-color:var(--red);box-shadow:0 0 0 3px rgba(240,82,82,.1)}
+.pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--txt3);font-size:16px;background:none;border:none;padding:2px;transition:color .15s}
+.pw-toggle:hover{color:var(--txt)}
+
+.auth-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.auth-check{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--txt2);cursor:pointer}
+.auth-check input{accent-color:var(--blue);width:14px;height:14px}
+.auth-link{font-size:12px;color:var(--blue);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;transition:opacity .15s}
+.auth-link:hover{opacity:.75}
+
+.auth-btn{
+  width:100%;padding:12px;
+  background:linear-gradient(135deg,var(--blue),#3568d0);
+  color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;
+  cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;
+  box-shadow:0 4px 14px rgba(79,142,247,.35);letter-spacing:.2px;
+}
+.auth-btn:hover{background:linear-gradient(135deg,#5a96f8,var(--blue2));box-shadow:0 6px 20px rgba(79,142,247,.45);transform:translateY(-1px)}
+.auth-btn:active{transform:translateY(0)}
+
+.auth-err{font-size:11px;color:var(--red);margin-top:5px;display:none;padding-left:2px}
+.auth-err.show{display:block}
+
+.auth-divider{text-align:center;margin:18px 0 0;font-size:11px;color:var(--txt3);border-top:1px solid var(--border);padding-top:16px}
+.auth-secure-badges{display:flex;justify-content:center;gap:16px;margin-top:12px}
+.auth-badge{font-size:10px;color:var(--txt3);display:flex;align-items:center;gap:4px}
+.auth-badge i{font-size:12px;color:var(--green)}
+
+/* Responsive: stack on smaller screens */
+@media(max-width:900px){
+  .auth-screen{flex-direction:column}
+  .auth-left,.auth-right{flex:none;width:100%}
+  .auth-left{padding:32px 24px;border-right:none;border-bottom:1px solid var(--border)}
+  .auth-right{padding:32px 24px}
+  .auth-kpi-strip{grid-template-columns:repeat(2,1fr)}
+  .auth-bottom-row{grid-template-columns:1fr}
+}
+@media(max-width:500px){
+  .auth-left{padding:24px 18px}
+  .auth-right{padding:24px 16px}
+  .auth-card{padding:24px 20px}
+  .auth-kpi-strip{grid-template-columns:repeat(2,1fr)}
+}
+
+/* APP SHELL */
+.app{display:none;min-height:600px}
+.app.visible{display:flex}
+.sidebar{width:var(--sidebar);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-logo{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-icon{width:32px;height:32px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+.logo-text{font-size:14px;font-weight:600;color:var(--txt);line-height:1.2}
+.logo-sub{font-size:10px;color:var(--txt3);font-family:'DM Mono',monospace}
+.sidebar-role{padding:10px 12px;margin:8px;background:var(--bg3);border-radius:8px;border:1px solid var(--border)}
+.role-label{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.role-select{width:100%;background:transparent;border:none;color:var(--txt);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;outline:none}
+.role-select option{background:var(--bg3)}
+.nav{flex:1;padding:8px;overflow-y:auto}
+.nav-section{margin-bottom:14px}
+.nav-section-label{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.8px;padding:4px 8px;margin-bottom:3px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;color:var(--txt2);transition:all .15s;margin-bottom:1px;font-size:12.5px;position:relative}
+.nav-item:hover{background:var(--bg3);color:var(--txt)}
+.nav-item.active{background:var(--blue3);color:var(--blue);font-weight:500}
+.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:20px;background:var(--blue);border-radius:0 2px 2px 0}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:600}
+.sidebar-footer{padding:12px;border-top:1px solid var(--border)}
+.logout-btn{width:100%;display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;color:var(--txt3);background:none;border:none;font-size:12px;font-family:'DM Sans',sans-serif;transition:all .15s}
+.logout-btn:hover{background:var(--red3);color:var(--red)}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{height:var(--topbar);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--txt3)}
+.breadcrumb span{color:var(--txt)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.topbar-btn{width:32px;height:32px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt2);font-size:16px;position:relative}
+.topbar-btn:hover{background:var(--bg4);color:var(--txt)}
+.notif-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:var(--red);border-radius:50%;border:1px solid var(--bg2)}
+.avatar{width:32px;height:32px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;cursor:pointer;flex-shrink:0}
+.content{flex:1;padding:20px;overflow-y:auto}
+h1.page-title{font-size:20px;font-weight:600;color:var(--txt);margin-bottom:4px}
+.page-sub{font-size:12px;color:var(--txt3);margin-bottom:20px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.kpi-label{font-size:11px;color:var(--txt3);margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.kpi-value{font-size:22px;font-weight:600;color:var(--txt);line-height:1}
+.kpi-delta{font-size:11px;margin-top:4px}
+.kpi-delta.up{color:var(--green)}
+.kpi-delta.dn{color:var(--red)}
+.kpi-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;margin-bottom:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:0}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.card-title{font-size:13px;font-weight:600;color:var(--txt)}
+.card-action{font-size:11px;color:var(--blue);cursor:pointer}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.badge-green{background:var(--green3);color:var(--green)}
+.badge-amber{background:var(--amber3);color:var(--amber)}
+.badge-red{background:var(--red3);color:var(--red)}
+.badge-blue{background:var(--blue3);color:var(--blue)}
+.badge-purple{background:var(--purple3);color:var(--purple)}
+.badge-teal{background:var(--teal3);color:var(--teal)}
+.badge-gray{background:var(--bg4);color:var(--txt2)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:8px 10px;color:var(--txt3);font-weight:500;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--txt);vertical-align:middle}
+tr:hover td{background:var(--bg3)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:none;transition:all .15s;font-family:'DM Sans',sans-serif}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:var(--blue2)}
+.btn-secondary{background:var(--bg3);color:var(--txt2);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--bg4);color:var(--txt)}
+.btn-success{background:var(--green2);color:#fff}
+.btn-danger{background:var(--red2);color:#fff}
+.btn-amber{background:var(--amber2);color:#fff}
+.btn-sm{padding:4px 10px;font-size:11px}
+.input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--txt);font-size:12px;font-family:'DM Sans',sans-serif;outline:none}
+.input:focus{border-color:var(--blue)}
+select.input{cursor:pointer}
+textarea.input{resize:vertical;min-height:70px}
+.label{font-size:11px;color:var(--txt3);margin-bottom:4px;display:block}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-group{margin-bottom:12px}
+.search-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.search-input{flex:1;min-width:180px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px 12px;color:var(--txt);font-size:12px;font-family:'DM Sans',sans-serif;outline:none}
+.search-input:focus{border-color:var(--blue)}
+.search-input::placeholder{color:var(--txt3)}
+.avatar-sm{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.progress-bar{background:var(--bg4);border-radius:4px;height:6px;overflow:hidden}
+.progress-fill{height:100%;border-radius:4px}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.stat-row:last-child{border-bottom:none}
+
+/* WORKFLOW TIMELINE */
+.wf-timeline{display:flex;flex-direction:column;gap:0;position:relative}
+.wf-step{display:flex;align-items:flex-start;gap:12px;padding-bottom:16px;position:relative}
+.wf-step:last-child{padding-bottom:0}
+.wf-step-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.wf-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;transition:all .3s}
+.wf-circle.done{background:var(--green3);color:var(--green);border:2px solid var(--green2)}
+.wf-circle.current{background:var(--blue3);color:var(--blue);border:2px solid var(--blue)}
+.wf-circle.pending{background:var(--bg4);color:var(--txt3);border:2px solid var(--border)}
+.wf-line{width:2px;flex:1;min-height:16px;background:var(--border);margin-top:4px}
+.wf-line.done{background:var(--green2)}
+.wf-step-content{flex:1;padding-top:4px}
+.wf-step-title{font-size:12px;font-weight:600}
+.wf-step-title.done{color:var(--green)}
+.wf-step-title.current{color:var(--blue)}
+.wf-step-title.pending{color:var(--txt3)}
+.wf-step-time{font-size:11px;color:var(--txt3);margin-top:2px}
+
+/* FLOW DIAGRAM */
+.flow-diagram{display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding:14px}
+.flow-node{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:11px;font-weight:500;color:var(--txt2);text-align:center;min-width:80px;transition:all .3s;cursor:pointer}
+.flow-node:hover{border-color:var(--blue);color:var(--blue)}
+.flow-node.active-flow{background:var(--blue3);border-color:var(--blue);color:var(--blue)}
+.flow-arrow{color:var(--txt3);font-size:14px}
+.flow-pulse{animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:12px;width:560px;max-width:92vw;max-height:82vh;overflow-y:auto}
+.modal-wide{width:640px}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1}
+.modal-title{font-size:15px;font-weight:600}
+.modal-close{cursor:pointer;color:var(--txt3);font-size:18px;background:none;border:none;padding:2px 6px}
+.modal-body{padding:20px}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;position:sticky;bottom:0;background:var(--bg2)}
+
+/* TOAST */
+.toast-container{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--bg3);border:1px solid var(--border);color:var(--txt);padding:11px 16px;border-radius:9px;font-size:12.5px;min-width:260px;max-width:340px;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:10px;animation:toastIn .25s ease}
+.toast.success{border-color:var(--green2)}
+.toast.error{border-color:var(--red2)}
+.toast-icon{font-size:16px}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+/* FILE UPLOAD */
+.upload-zone{border:2px dashed var(--border);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;color:var(--txt3)}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--blue);background:var(--blue3);color:var(--blue)}
+.upload-zone input{display:none}
+.file-list{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.file-item{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px}
+.file-item-name{flex:1;font-size:11px;color:var(--txt)}
+.file-item-size{font-size:10px;color:var(--txt3)}
+.file-remove{cursor:pointer;color:var(--txt3);font-size:14px;background:none;border:none;padding:0}
+.file-remove:hover{color:var(--red)}
+
+/* AI RECOMMENDATION */
+.ai-rec{background:var(--bg3);border:1px solid var(--purple2);border-radius:10px;padding:14px;margin-bottom:14px;border-left:3px solid var(--purple)}
+.ai-rec-title{font-size:12px;font-weight:600;color:var(--purple);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.ai-rec-body{font-size:12px;color:var(--txt2)}
+
+/* LEADERBOARD */
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.lb-row:last-child{border-bottom:none}
+.lb-rank{width:24px;text-align:center;font-size:12px;font-weight:700;color:var(--txt3)}
+.lb-rank.gold{color:var(--amber)}
+.lb-rank.silver{color:var(--txt2)}
+.lb-rank.bronze{color:#cd7f32}
+.lb-info{flex:1}
+.lb-name{font-size:12px;font-weight:500}
+.lb-sub{font-size:11px;color:var(--txt3)}
+.lb-metrics{display:flex;gap:14px;font-size:11px;color:var(--txt3)}
+.lb-score{font-size:14px;font-weight:700;color:var(--txt)}
+.score-bar{display:flex;align-items:center;gap:8px;margin:3px 0}
+.score-lbl{font-size:11px;color:var(--txt3);width:90px;flex-shrink:0}
+.score-track{flex:1;background:var(--bg4);border-radius:4px;height:5px}
+.score-fill-bar{height:100%;border-radius:4px}
+.score-val{font-size:11px;font-weight:600;width:34px;text-align:right}
+.tag{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:11px;background:var(--bg4);color:var(--txt2);margin:1px}
+.stars{color:var(--amber);font-size:12px}
+
+/* FUNNEL */
+.funnel-step{margin-bottom:6px;position:relative}
+.funnel-bar-wrap{height:32px;border-radius:6px;overflow:hidden;background:var(--bg4);position:relative}
+.funnel-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:11px;font-weight:500;transition:width .6s}
+.funnel-label{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:500;z-index:1}
+
+/* PO / Invoice Doc */
+.doc-white{background:#fff;color:#1a1a2e;border-radius:10px;padding:24px;font-family:'DM Sans',sans-serif}
+.doc-white table{width:100%;border-collapse:collapse;font-size:11px;margin:10px 0}
+.doc-white th{background:#f0f2f8;padding:6px 8px;text-align:left;color:#444;font-weight:600}
+.doc-white td{padding:6px 8px;border-bottom:1px solid #e5e7eb;color:#333}
+.doc-white .doc-total{background:#f0f2f8;font-weight:700}
+.doc-white .doc-footer{margin-top:16px;font-size:10px;color:#888;border-top:1px solid #e5e7eb;padding-top:10px}
+.sig-area{display:flex;justify-content:space-between;margin-top:24px;padding-top:16px;border-top:1px solid #e5e7eb}
+.sig-box{text-align:center;width:140px}
+.sig-line{border-bottom:1px solid #999;height:40px;margin-bottom:4px}
+.sig-label{font-size:10px;color:#888}
+
+/* PRINT */
+@media print{
+  .auth-screen,.topbar,.sidebar{display:none!important}
+  .content{padding:0!important}
+  .no-print{display:none!important}
+  .print-only{display:block!important}
+  body{background:#fff;color:#000}
+  .doc-white{box-shadow:none}
+}
+</style>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- AUTH SCREEN -->
+<div class="auth-screen" id="authScreen">
+
+  <!-- LEFT 60% -->
+  <div class="auth-left">
+    <!-- Brand -->
+    <div class="auth-brand">
+      <div class="auth-logo">VB</div>
+      <div class="auth-brand-text">
+        <h1>VendorBridge</h1>
+        <p>Enterprise Procurement Platform · v2.5.0</p>
+      </div>
+    </div>
+
+    <div class="auth-tagline">Smart Procurement. Smarter Decisions.</div>
+
+    <!-- Workflow Visualization -->
+    <div class="auth-workflow">
+      <div class="auth-workflow-title"><i class="ti ti-arrow-guide" style="margin-right:4px" aria-hidden="true"></i>Procurement Workflow</div>
+      <div class="auth-wf-steps">
+        <div class="auth-wf-step">
+          <div class="auth-wf-dot">1</div>
+          <div class="auth-wf-label">Vendor Registration</div>
+        </div>
+        <div class="auth-wf-step">
+          <div class="auth-wf-dot">2</div>
+          <div class="auth-wf-label">RFQ Creation</div>
+        </div>
+        <div class="auth-wf-step">
+          <div class="auth-wf-dot">3</div>
+          <div class="auth-wf-label">Quotation Submission</div>
+        </div>
+        <div class="auth-wf-step">
+          <div class="auth-wf-dot">4</div>
+          <div class="auth-wf-label">Approval Workflow</div>
+        </div>
+        <div class="auth-wf-step">
+          <div class="auth-wf-dot">5</div>
+          <div class="auth-wf-label">Purchase Order</div>
+        </div>
+        <div class="auth-wf-step">
+          <div class="auth-wf-dot">6</div>
+          <div class="auth-wf-label">Invoice Generation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Strip -->
+    <div class="auth-kpi-strip">
+      <div class="auth-kpi-card">
+        <div class="auth-kpi-val" style="color:var(--blue)">25</div>
+        <div class="auth-kpi-lbl">Active Vendors</div>
+      </div>
+      <div class="auth-kpi-card">
+        <div class="auth-kpi-val" style="color:var(--green)">15</div>
+        <div class="auth-kpi-lbl">Open RFQs</div>
+      </div>
+      <div class="auth-kpi-card">
+        <div class="auth-kpi-val" style="color:var(--amber)">50</div>
+        <div class="auth-kpi-lbl">Quotations</div>
+      </div>
+      <div class="auth-kpi-card">
+        <div class="auth-kpi-val" style="color:var(--purple);font-size:15px">₹2.4M</div>
+        <div class="auth-kpi-lbl">Procurement Value</div>
+      </div>
+    </div>
+
+    <!-- Features + Demo Creds -->
+    <div class="auth-bottom-row">
+      <div class="auth-features">
+        <div class="auth-features-title"><i class="ti ti-checklist" style="margin-right:4px" aria-hidden="true"></i>Platform Features</div>
+        <div class="auth-feature-item"><i class="ti ti-check auth-feature-icon" aria-hidden="true"></i>Vendor Management</div>
+        <div class="auth-feature-item"><i class="ti ti-check auth-feature-icon" aria-hidden="true"></i>RFQ Automation</div>
+        <div class="auth-feature-item"><i class="ti ti-check auth-feature-icon" aria-hidden="true"></i>Quotation Comparison</div>
+        <div class="auth-feature-item"><i class="ti ti-check auth-feature-icon" aria-hidden="true"></i>Approval Workflow</div>
+        <div class="auth-feature-item"><i class="ti ti-check auth-feature-icon" aria-hidden="true"></i>Purchase Orders</div>
+        <div class="auth-feature-item"><i class="ti ti-check auth-feature-icon" aria-hidden="true"></i>Invoice Management</div>
+      </div>
+
+      <div class="auth-demo-creds">
+        <div class="auth-demo-title"><i class="ti ti-key" aria-hidden="true"></i> Demo Credentials</div>
+        <div class="demo-row" onclick="fillDemo('admin@vendorbridge.com','Admin')">
+          <span class="demo-email">admin@vendorbridge.com</span>
+          <span class="demo-role">Admin</span>
+        </div>
+        <div class="demo-row" onclick="fillDemo('officer@vendorbridge.com','Procurement Officer')">
+          <span class="demo-email">officer@vendorbridge.com</span>
+          <span class="demo-role">Officer</span>
+        </div>
+        <div class="demo-row" onclick="fillDemo('vendor@vendorbridge.com','Vendor')">
+          <span class="demo-email">vendor@vendorbridge.com</span>
+          <span class="demo-role">Vendor</span>
+        </div>
+        <div class="demo-row" onclick="fillDemo('manager@vendorbridge.com','Manager')">
+          <span class="demo-email">manager@vendorbridge.com</span>
+          <span class="demo-role">Manager</span>
+        </div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:10px;color:var(--txt3)">
+          Password for all: <span style="font-family:'DM Mono',monospace;color:var(--txt2);font-size:11px">123456</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT 40% -->
+  <div class="auth-right">
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <h2>Welcome back</h2>
+        <p>Sign in to your procurement workspace</p>
+      </div>
+
+      <div class="auth-tab-row">
+        <div class="auth-tab active" onclick="switchAuthTab('login')">Sign In</div>
+        <div class="auth-tab" onclick="switchAuthTab('signup')">Create Account</div>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="auth-form active" id="loginForm">
+        <div class="auth-field">
+          <label class="auth-label">Email Address</label>
+          <input class="auth-input" type="email" id="loginEmail" placeholder="you@company.com" autocomplete="email">
+          <div class="auth-err" id="loginEmailErr">Please enter a valid email address</div>
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Password</label>
+          <div class="auth-input-wrap">
+            <input class="auth-input" type="password" id="loginPw" placeholder="••••••••" autocomplete="current-password" style="padding-right:40px">
+            <button class="pw-toggle" onclick="togglePw('loginPw',this)" aria-label="Toggle password visibility"><i class="ti ti-eye" aria-hidden="true"></i></button>
+          </div>
+          <div class="auth-err" id="loginPwErr">Incorrect password. Try 123456</div>
+        </div>
+        <div class="auth-row">
+          <label class="auth-check"><input type="checkbox" id="rememberMe"> Remember me</label>
+          <button class="auth-link" onclick="showForgotPw()">Forgot password?</button>
+        </div>
+        <button class="auth-btn" id="loginBtn" onclick="doLogin()">
+          <i class="ti ti-login" style="margin-right:6px;font-size:15px" aria-hidden="true"></i>Sign In
+        </button>
+        <div class="auth-divider">Enterprise Single Sign-On</div>
+        <div class="auth-secure-badges">
+          <div class="auth-badge"><i class="ti ti-shield-check" aria-hidden="true"></i> SOC 2 Compliant</div>
+          <div class="auth-badge"><i class="ti ti-lock" aria-hidden="true"></i> 256-bit SSL</div>
+          <div class="auth-badge"><i class="ti ti-certificate" aria-hidden="true"></i> ISO 27001</div>
+        </div>
+      </div>
+
+      <!-- SIGNUP -->
+      <div class="auth-form" id="signupForm">
+        <div class="form-row" style="gap:10px;margin-bottom:0">
+          <div class="auth-field" style="margin-bottom:12px"><label class="auth-label">Full Name</label><input class="auth-input" id="suName" placeholder="Rahul Sharma"></div>
+          <div class="auth-field" style="margin-bottom:12px"><label class="auth-label">Company</label><input class="auth-input" id="suCompany" placeholder="TechPro Pvt Ltd"></div>
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Work Email</label>
+          <input class="auth-input" type="email" id="suEmail" placeholder="rahul@company.com">
+          <div class="auth-err" id="suEmailErr">Please enter a valid email</div>
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Role</label>
+          <select class="auth-input" id="suRole" style="cursor:pointer">
+            <option>Procurement Officer</option><option>Vendor</option><option>Manager</option><option>Admin</option>
+          </select>
+        </div>
+        <div class="form-row" style="gap:10px;margin-bottom:0">
+          <div class="auth-field" style="margin-bottom:12px">
+            <label class="auth-label">Password</label>
+            <div class="auth-input-wrap">
+              <input class="auth-input" type="password" id="suPw" placeholder="Min 6 chars" style="padding-right:40px">
+              <button class="pw-toggle" onclick="togglePw('suPw',this)" aria-label="Toggle"><i class="ti ti-eye" aria-hidden="true"></i></button>
+            </div>
+          </div>
+          <div class="auth-field" style="margin-bottom:12px">
+            <label class="auth-label">Confirm</label>
+            <div class="auth-input-wrap">
+              <input class="auth-input" type="password" id="suPw2" placeholder="Repeat" style="padding-right:40px">
+              <button class="pw-toggle" onclick="togglePw('suPw2',this)" aria-label="Toggle"><i class="ti ti-eye" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="auth-err" id="suPwErr" style="margin-bottom:12px">Passwords do not match</div>
+        <button class="auth-btn" onclick="doSignup()">
+          <i class="ti ti-user-plus" style="margin-right:6px;font-size:15px" aria-hidden="true"></i>Create Account
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD MODAL -->
+<div id="forgotModal" style="display:none">
+  <div class="modal-overlay" onclick="closeModal('forgotModal')">
+    <div class="modal" style="width:400px" onclick="event.stopPropagation()">
+      <div class="modal-header"><span class="modal-title">Reset Password</span><button class="modal-close" onclick="closeModal('forgotModal')">✕</button></div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--txt2);margin-bottom:16px">Enter your email address and we'll send you a reset link.</p>
+        <div class="form-group"><label class="label">Email Address</label><input class="input" type="email" id="fpEmail" placeholder="you@company.com"></div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('forgotModal')">Cancel</button><button class="btn btn-primary" onclick="doForgotPw()">Send Reset Link</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div class="app" id="appShell">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">VB</div>
+      <div><div class="logo-text">VendorBridge</div><div class="logo-sub">ERP v2.5.0</div></div>
+    </div>
+    <div class="sidebar-role">
+      <div class="role-label">Current Role</div>
+      <select class="role-select" id="roleSelect" onchange="changeRole(this.value)">
+        <option value="admin">👤 Admin</option>
+        <option value="officer" selected>📋 Procurement Officer</option>
+        <option value="vendor">🏢 Vendor</option>
+        <option value="manager">✅ Manager / Approver</option>
+      </select>
+    </div>
+    <nav class="nav" id="sideNav"></nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()"><i class="ti ti-logout" aria-hidden="true"></i> Sign Out</button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="topbar">
+      <div class="breadcrumb" id="breadcrumb"><i class="ti ti-home" aria-hidden="true"></i><span>›</span><span id="bcPage">Dashboard</span></div>
+      <div class="topbar-right">
+        <div style="font-size:11px;color:var(--txt3)" id="userGreeting"></div>
+        <div class="topbar-btn" onclick="showPage('notifications')"><i class="ti ti-bell" aria-hidden="true"></i><div class="notif-dot"></div></div>
+        <div class="topbar-btn"><i class="ti ti-settings" aria-hidden="true"></i></div>
+        <div class="avatar" id="userAvatar">PO</div>
+      </div>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+/* ── MOCK DATA ── */
+const DEMO_USERS=[
+  {email:'admin@vendorbridge.com',password:'123456',name:'Admin User',role:'admin',initials:'AD',company:'VendorBridge'},
+  {email:'officer@vendorbridge.com',password:'123456',name:'John Doe',role:'officer',initials:'JD',company:'VendorBridge'},
+  {email:'vendor@vendorbridge.com',password:'123456',name:'Rahul Sharma',role:'vendor',initials:'RS',company:'TechPro Solutions'},
+  {email:'manager@vendorbridge.com',password:'123456',name:'Sarah Manager',role:'manager',initials:'SM',company:'VendorBridge'},
+];
+
+const vendors=[
+  {id:'V001',name:'TechPro Solutions',category:'IT Equipment',gst:'27AABCT1234M1Z5',contact:'Rahul Sharma',email:'rahul@techpro.in',phone:'+91 98765 43210',rating:4.8,status:'Active',spend:2450000,orders:12,onTime:96,responseTime:'4h',winRate:75},
+  {id:'V002',name:'Office Essentials',category:'Office Furniture',gst:'07AAACO2345N1Z3',contact:'Priya Mehta',email:'priya@oesupp.in',phone:'+91 87654 32109',rating:4.2,status:'Active',spend:890000,orders:8,onTime:88,responseTime:'12h',winRate:55},
+  {id:'V003',name:'NetConnect India',category:'Networking',gst:'29AAACN3456O1Z1',contact:'Suresh Kumar',email:'suresh@netconn.in',phone:'+91 76543 21098',rating:4.5,status:'Active',spend:1230000,orders:6,onTime:92,responseTime:'6h',winRate:80},
+  {id:'V004',name:'PrintMasters',category:'Printers',gst:'33AAACP4567P1Z9',contact:'Anita Nair',email:'anita@printm.in',phone:'+91 65432 10987',rating:3.9,status:'Active',spend:450000,orders:4,onTime:85,responseTime:'18h',winRate:40},
+  {id:'V005',name:'SoftLicense Hub',category:'Software',gst:'36AAAAS5678Q1Z7',contact:'Vijay Reddy',email:'vijay@softhub.in',phone:'+91 54321 09876',rating:4.6,status:'Active',spend:780000,orders:9,onTime:94,responseTime:'3h',winRate:70},
+  {id:'V006',name:'FurniCorp',category:'Office Furniture',gst:'19AAAAF6789R1Z5',contact:'Deepa Roy',email:'deepa@furnicorp.in',phone:'+91 43210 98765',rating:3.7,status:'Inactive',spend:120000,orders:2,onTime:80,responseTime:'24h',winRate:30},
+  {id:'V007',name:'Gadget Galaxy',category:'IT Equipment',gst:'24AAAAG7890S1Z3',contact:'Nikhil Joshi',email:'nikhil@gadgetg.in',phone:'+91 32109 87654',rating:4.3,status:'Active',spend:980000,orders:7,onTime:90,responseTime:'8h',winRate:62},
+];
+
+const rfqs=[
+  {id:'RFQ-2024-001',title:'Laptop Procurement Q4',product:'Laptops (Dell/HP)',qty:25,unit:'Units',budget:1250000,priority:'High',deadline:'2024-12-30',status:'Published',vendors:['V001','V007'],created:'2024-11-15',description:'Procurement of 25 business laptops for development team expansion',attachments:[]},
+  {id:'RFQ-2024-002',title:'Office Furniture Setup',product:'Workstations & Chairs',qty:50,unit:'Sets',budget:750000,priority:'Medium',deadline:'2024-12-20',status:'Under Review',vendors:['V002','V006'],created:'2024-11-10',description:'Complete workstation setup for new office floor',attachments:[]},
+  {id:'RFQ-2024-003',title:'Network Switch Upgrade',product:'Cisco 48-Port Switches',qty:10,unit:'Units',budget:480000,priority:'High',deadline:'2024-12-15',status:'Approved',vendors:['V003'],created:'2024-11-05',description:'Enterprise network infrastructure upgrade',attachments:[]},
+  {id:'RFQ-2024-004',title:'Printer Fleet Renewal',product:'HP LaserJet Pro',qty:15,unit:'Units',budget:225000,priority:'Low',deadline:'2025-01-15',status:'Draft',vendors:['V004'],created:'2024-11-20',description:'Department printer replacement program',attachments:[]},
+  {id:'RFQ-2024-005',title:'Microsoft 365 Licenses',product:'M365 Business Premium',qty:100,unit:'Licenses',budget:350000,priority:'Medium',deadline:'2024-12-31',status:'PO Generated',vendors:['V005'],created:'2024-10-30',description:'Annual software license renewal',attachments:[]},
+];
+
+const quotations=[
+  {id:'Q001',rfqId:'RFQ-2024-001',vendorId:'V001',unitPrice:47500,total:1187500,delivery:14,warranty:'3 Years',notes:'Dell Latitude 5540 with 16GB RAM',status:'Submitted',tax:213750,score:88},
+  {id:'Q002',rfqId:'RFQ-2024-001',vendorId:'V007',unitPrice:45800,total:1145000,delivery:21,warranty:'2 Years',notes:'HP EliteBook 840 with 16GB RAM',status:'Submitted',tax:206100,score:82},
+  {id:'Q003',rfqId:'RFQ-2024-002',vendorId:'V002',unitPrice:14200,total:710000,delivery:30,warranty:'5 Years',notes:'Ergonomic L-shaped workstations',status:'Submitted',tax:127800,score:85},
+  {id:'Q004',rfqId:'RFQ-2024-002',vendorId:'V006',unitPrice:15500,total:775000,delivery:25,warranty:'3 Years',notes:'Premium modular workstations',status:'Submitted',tax:139500,score:78},
+  {id:'Q005',rfqId:'RFQ-2024-003',vendorId:'V003',unitPrice:46500,total:465000,delivery:7,warranty:'5 Years',notes:'Cisco Catalyst 9200-48P with POE+',status:'Accepted',tax:83700,score:92},
+];
+
+const purchaseOrders=[
+  {id:'PO-2024-001',rfqId:'RFQ-2024-003',vendorId:'V003',vendorName:'NetConnect India',items:'Cisco Catalyst 9200-48P Switches',qty:10,unitCost:46500,subtotal:465000,tax:83700,total:548700,status:'Active',date:'2024-11-20',deliveryDate:'2024-11-27'},
+  {id:'PO-2024-002',rfqId:'RFQ-2024-005',vendorId:'V005',vendorName:'SoftLicense Hub',items:'Microsoft 365 Business Premium',qty:100,unitCost:3500,subtotal:350000,tax:63000,total:413000,status:'Delivered',date:'2024-11-15',deliveryDate:'2024-11-18'},
+];
+
+const invoices=[
+  {id:'INV-2024-001',poId:'PO-2024-001',vendorId:'V003',vendorName:'NetConnect India',gst:'29AAACN3456O1Z1',contact:'Suresh Kumar',date:'2024-11-21',dueDate:'2024-12-21',subtotal:465000,tax:83700,total:548700,status:'Pending',items:[{desc:'Cisco Catalyst 9200-48P Switch',qty:10,rate:46500,amount:465000}]},
+  {id:'INV-2024-002',poId:'PO-2024-002',vendorId:'V005',vendorName:'SoftLicense Hub',gst:'36AAAAS5678Q1Z7',contact:'Vijay Reddy',date:'2024-11-16',dueDate:'2024-12-16',subtotal:350000,tax:63000,total:413000,status:'Paid',items:[{desc:'Microsoft 365 Business Premium',qty:100,rate:3500,amount:350000}]},
+];
+
+const approvals=[
+  {id:'APR-001',rfqId:'RFQ-2024-001',title:'Laptop Procurement Q4',status:'Under Review',submittedBy:'John Doe',submittedOn:'2024-11-16',amount:1250000,remarks:''},
+  {id:'APR-002',rfqId:'RFQ-2024-003',title:'Network Switch Upgrade',status:'Approved',submittedBy:'John Doe',submittedOn:'2024-11-06',approvedOn:'2024-11-18',amount:465000,remarks:'Approved. Proceed with PO generation.'},
+  {id:'APR-003',rfqId:'RFQ-2024-002',title:'Office Furniture Setup',status:'Pending',submittedBy:'John Doe',submittedOn:'2024-11-11',amount:750000,remarks:''},
+];
+
+const activities=[
+  {id:1,user:'John Doe',action:'Generated Invoice INV-2024-001',module:'Invoice',date:'2024-11-21',time:'14:32',status:'Success'},
+  {id:2,user:'Suresh Kumar',action:'Submitted Quotation Q005',module:'Quotation',date:'2024-11-20',time:'11:15',status:'Success'},
+  {id:3,user:'Admin User',action:'Published RFQ-2024-001',module:'RFQ',date:'2024-11-15',time:'09:30',status:'Success'},
+  {id:4,user:'Sarah Manager',action:'Approved RFQ-2024-003',module:'Approval',date:'2024-11-18',time:'16:45',status:'Success'},
+  {id:5,user:'John Doe',action:'Created PO PO-2024-001',module:'Purchase Order',date:'2024-11-20',time:'17:00',status:'Success'},
+  {id:6,user:'Rahul Sharma',action:'Submitted Quotation Q001',module:'Quotation',date:'2024-11-17',time:'10:20',status:'Success'},
+  {id:7,user:'Admin User',action:'Added Vendor V007 Gadget Galaxy',module:'Vendor',date:'2024-11-14',time:'08:55',status:'Success'},
+  {id:8,user:'John Doe',action:'Created RFQ-2024-004',module:'RFQ',date:'2024-11-20',time:'12:00',status:'Success'},
+];
+
+const navConfig={
+  admin:[
+    {section:'Overview',items:[{id:'dashboard',label:'Dashboard',icon:'ti-home'},{id:'analytics',label:'Analytics',icon:'ti-chart-dots'}]},
+    {section:'Management',items:[{id:'vendors',label:'Vendors',icon:'ti-building-store'},{id:'users',label:'User Management',icon:'ti-users'}]},
+    {section:'Procurement',items:[{id:'rfqs',label:'RFQs',icon:'ti-file-description'},{id:'approvals',label:'Approvals',icon:'ti-check'}]},
+    {section:'Records',items:[{id:'pos',label:'Purchase Orders',icon:'ti-receipt'},{id:'invoices',label:'Invoices',icon:'ti-file-invoice'},{id:'activity',label:'Activity Logs',icon:'ti-list-details'},{id:'notifications',label:'Notifications',icon:'ti-bell',badge:3}]},
+  ],
+  officer:[
+    {section:'Overview',items:[{id:'dashboard',label:'Dashboard',icon:'ti-home'}]},
+    {section:'Procurement',items:[{id:'rfqs',label:'RFQs',icon:'ti-file-description'},{id:'quotations',label:'Quotations',icon:'ti-file-text'},{id:'compare',label:'Compare Quotes',icon:'ti-layout-columns'},{id:'pos',label:'Purchase Orders',icon:'ti-receipt'},{id:'invoices',label:'Invoices',icon:'ti-file-invoice'}]},
+    {section:'Vendor',items:[{id:'vendors',label:'Vendors',icon:'ti-building-store'}]},
+    {section:'System',items:[{id:'analytics',label:'Analytics',icon:'ti-chart-dots'},{id:'notifications',label:'Notifications',icon:'ti-bell',badge:3}]},
+  ],
+  vendor:[
+    {section:'Overview',items:[{id:'dashboard',label:'Dashboard',icon:'ti-home'}]},
+    {section:'RFQ',items:[{id:'rfqs',label:'View RFQs',icon:'ti-file-description'},{id:'quotations',label:'My Quotations',icon:'ti-file-text'}]},
+    {section:'Orders',items:[{id:'pos',label:'Purchase Orders',icon:'ti-receipt'},{id:'invoices',label:'Invoices',icon:'ti-file-invoice'}]},
+    {section:'Alerts',items:[{id:'notifications',label:'Notifications',icon:'ti-bell',badge:2}]},
+  ],
+  manager:[
+    {section:'Overview',items:[{id:'dashboard',label:'Dashboard',icon:'ti-home'}]},
+    {section:'Approvals',items:[{id:'approvals',label:'Approval Workflow',icon:'ti-check',badge:2},{id:'rfqs',label:'RFQs',icon:'ti-file-description'}]},
+    {section:'Analytics',items:[{id:'analytics',label:'Analytics',icon:'ti-chart-dots'},{id:'activity',label:'Activity Logs',icon:'ti-list-details'}]},
+    {section:'Alerts',items:[{id:'notifications',label:'Notifications',icon:'ti-bell',badge:2}]},
+  ],
+};
+
+/* ── STATE ── */
+let currentRole='officer',currentPage='dashboard',charts={},currentUser=null,uploadedFiles=[];
+
+/* ── UTILS ── */
+const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
+const statusBadge=s=>{const m={Active:'green',Published:'blue','Under Review':'amber',Approved:'green','PO Generated':'teal',Draft:'gray',Inactive:'red',Submitted:'blue',Accepted:'green',Pending:'amber',Paid:'green',Delivered:'teal',Rejected:'red'};return`<span class="badge badge-${m[s]||'gray'}">${s}</span>`};
+function toast(msg,type='success'){
+  const c=document.getElementById('toastContainer');
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  const icon=type==='success'?'ti-check':type==='error'?'ti-x':'ti-info-circle';
+  t.innerHTML=`<i class="ti ${icon} toast-icon" aria-hidden="true"></i>${msg}`;
+  c.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300)},3500);
+}
+function closeModal(id){const m=document.getElementById(id);if(m)m.style.display='none'}
+function openModal(id){const m=document.getElementById(id);if(m)m.style.display='block'}
+
+/* ── AUTH ── */
+function switchAuthTab(tab){
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',i===(tab==='login'?0:1)));
+  document.getElementById('loginForm').classList.toggle('active',tab==='login');
+  document.getElementById('signupForm').classList.toggle('active',tab==='signup');
+}
+function fillDemo(email,role){
+  document.getElementById('loginEmail').value=email;
+  document.getElementById('loginPw').value='123456';
+  switchAuthTab('login');
+}
+function togglePw(inputId,btn){
+  const inp=document.getElementById(inputId);
+  const isText=inp.type==='text';
+  inp.type=isText?'password':'text';
+  btn.querySelector('i').className=`ti ${isText?'ti-eye':'ti-eye-off'}`;
+}
+function showForgotPw(){openModal('forgotModal')}
+function doForgotPw(){
+  const e=document.getElementById('fpEmail').value;
+  if(!e||!/\S+@\S+\.\S+/.test(e)){toast('Please enter a valid email','error');return}
+  closeModal('forgotModal');
+  toast('Password reset link sent successfully!');
+}
+function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pw=document.getElementById('loginPw').value;
+  const emailErr=document.getElementById('loginEmailErr');
+  const pwErr=document.getElementById('loginPwErr');
+  emailErr.classList.remove('show');pwErr.classList.remove('show');
+  if(!email||!/\S+@\S+\.\S+/.test(email)){emailErr.classList.add('show');return}
+  const user=DEMO_USERS.find(u=>u.email===email);
+  if(!user){emailErr.textContent='No account found with this email';emailErr.classList.add('show');return}
+  if(pw!==user.password){pwErr.classList.add('show');return}
+  const remember=document.getElementById('rememberMe').checked;
+  if(remember)localStorage.setItem('vb_remember',JSON.stringify({email,role:user.role}));
+  localStorage.setItem('vb_currentUser',JSON.stringify(user));
+  localStorage.setItem('vb_isLoggedIn','true');
+  localStorage.setItem('vb_userRole',user.role);
+  currentUser=user;
+  launchApp(user);
+}
+function doSignup(){
+  const name=document.getElementById('suName').value.trim();
+  const email=document.getElementById('suEmail').value.trim();
+  const pw=document.getElementById('suPw').value;
+  const pw2=document.getElementById('suPw2').value;
+  const err=document.getElementById('suEmailErr');
+  const pwErr=document.getElementById('suPwErr');
+  err.classList.remove('show');pwErr.classList.remove('show');
+  if(!name||!email||!pw){toast('Please fill all required fields','error');return}
+  if(!/\S+@\S+\.\S+/.test(email)){err.classList.add('show');return}
+  if(pw!==pw2){pwErr.classList.add('show');return}
+  toast('Account created! Please sign in.');
+  switchAuthTab('login');
+  document.getElementById('loginEmail').value=email;
+}
+function doLogout(){
+  localStorage.removeItem('vb_isLoggedIn');
+  localStorage.removeItem('vb_currentUser');
+  localStorage.removeItem('vb_userRole');
+  currentUser=null;
+  document.getElementById('appShell').classList.remove('visible');
+  document.getElementById('authScreen').style.display='flex';
+  toast('Signed out successfully');
+}
+function launchApp(user){
+  document.getElementById('authScreen').style.display='none';
+  document.getElementById('appShell').classList.add('visible');
+  currentRole=user.role;
+  document.getElementById('userAvatar').textContent=user.initials;
+  document.getElementById('userGreeting').textContent=`Hi, ${user.name.split(' ')[0]}`;
+  const rs=document.getElementById('roleSelect');
+  if(rs)rs.value=user.role;
+  renderNav();
+  showPage('dashboard');
+}
+function checkSession(){
+  try{
+    const stored=localStorage.getItem('vb_currentUser');
+    if(stored&&localStorage.getItem('vb_isLoggedIn')==='true'){
+      currentUser=JSON.parse(stored);
+      launchApp(currentUser);return;
+    }
+  }catch(e){}
+  document.getElementById('authScreen').style.display='flex';
+  document.getElementById('appShell').classList.remove('visible');
+}
+
+/* ── NAV ── */
+function changeRole(role){
+  currentRole=role;
+  const initials={admin:'AD',officer:'JD',vendor:'RS',manager:'SM'};
+  document.getElementById('userAvatar').textContent=initials[role]||'??';
+  renderNav();showPage('dashboard');
+}
+function renderNav(){
+  const nav=document.getElementById('sideNav');nav.innerHTML='';
+  (navConfig[currentRole]||[]).forEach(sec=>{
+    const d=document.createElement('div');d.className='nav-section';
+    d.innerHTML=`<div class="nav-section-label">${sec.section}</div>`;
+    sec.items.forEach(item=>{
+      const el=document.createElement('div');
+      el.className='nav-item'+(currentPage===item.id?' active':'');
+      el.setAttribute('data-page',item.id);
+      el.innerHTML=`<i class="ti ${item.icon} nav-icon" aria-hidden="true"></i><span>${item.label}</span>${item.badge?`<span class="nav-badge">${item.badge}</span>`:''}`;
+      el.onclick=()=>showPage(item.id);
+      d.appendChild(el);
+    });
+    nav.appendChild(d);
+  });
+}
+function showPage(pid){
+  currentPage=pid;
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.getAttribute('data-page')===pid));
+  const labels={dashboard:'Dashboard',vendors:'Vendor Management',rfqs:'RFQ Management',quotations:'Quotations',compare:'Quotation Comparison',pos:'Purchase Orders',invoices:'Invoices',approvals:'Approval Workflow',analytics:'Analytics & Reports',activity:'Activity Logs',notifications:'Notifications',users:'User Management'};
+  document.getElementById('bcPage').textContent=labels[pid]||pid;
+  Object.values(charts).forEach(c=>{try{c.destroy()}catch(e){}});charts={};
+  uploadedFiles=[];
+  document.getElementById('content').innerHTML=renderPage(pid);
+  setTimeout(()=>initCharts(pid),60);
+}
+
+/* ── PAGES ── */
+function renderPage(p){
+  switch(p){
+    case 'dashboard':return renderDashboard();
+    case 'vendors':return renderVendors();
+    case 'rfqs':return renderRFQs();
+    case 'quotations':return renderQuotations();
+    case 'compare':return renderCompare();
+    case 'pos':return renderPOs();
+    case 'invoices':return renderInvoices();
+    case 'approvals':return renderApprovals();
+    case 'analytics':return renderAnalytics();
+    case 'activity':return renderActivity();
+    case 'notifications':return renderNotifications();
+    case 'users':return renderUsers();
+    default:return '<div style="padding:40px;text-align:center;color:var(--txt3)">Coming soon</div>';
+  }
+}
+
+/* WORKFLOW TIMELINE COMPONENT */
+function workflowTimeline(currentStepIdx){
+  const steps=[
+    {label:'RFQ Created',time:'Nov 15, 2024 · 09:30',icon:'ti-file-description'},
+    {label:'Quotation Submitted',time:'Nov 17, 2024 · 10:20',icon:'ti-file-text'},
+    {label:'Quotations Compared',time:'Nov 18, 2024 · 09:00',icon:'ti-layout-columns'},
+    {label:'Manager Review',time:'Nov 18, 2024 · 16:45',icon:'ti-user-check'},
+    {label:'Approved',time:'Nov 18, 2024 · 17:00',icon:'ti-check'},
+    {label:'PO Generated',time:'Nov 20, 2024 · 17:00',icon:'ti-receipt'},
+    {label:'Invoice Generated',time:'Nov 21, 2024 · 14:32',icon:'ti-file-invoice'},
+  ];
+  return`<div class="wf-timeline">${steps.map((s,i)=>{
+    const state=i<currentStepIdx?'done':i===currentStepIdx?'current':'pending';
+    return`<div class="wf-step">
+      <div class="wf-step-left">
+        <div class="wf-circle ${state}"><i class="ti ${state==='done'?'ti-check':s.icon}" aria-hidden="true"></i></div>
+        ${i<steps.length-1?`<div class="wf-line ${state==='done'?'done':''}"></div>`:''}
+      </div>
+      <div class="wf-step-content">
+        <div class="wf-step-title ${state}">${s.label}</div>
+        <div class="wf-step-time">${state!=='pending'?s.time:'Pending'}</div>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+/* PROCUREMENT FLOW DIAGRAM */
+function flowDiagram(activeIdx){
+  const nodes=['Vendor Registration','RFQ Creation','Quote Submission','Quote Comparison','Approval','Purchase Order','Invoice','Email / Print'];
+  return`<div style="display:flex;align-items:center;flex-wrap:wrap;gap:3px;padding:12px 0">
+    ${nodes.map((n,i)=>`<span class="flow-node${i===activeIdx?' active-flow':''}" onclick="flowClick(${i})">${n}</span>${i<nodes.length-1?`<span class="flow-arrow">${i===activeIdx?'›':i<(activeIdx||0)?'›':'›'}</span>`:''}`).join('')}
+  </div>`;
+}
+function flowClick(i){toast(`Step ${i+1}: ${['Register vendors in the system','Create & publish RFQ','Vendors submit competitive quotes','Compare & score all quotes','Route for manager approval','Generate PO from approved quote','Create & send invoice','Download PDF or email to vendor'][i]}`)}
+
+/* DASHBOARD */
+function renderDashboard(){
+  return`
+  <h1 class="page-title">Procurement Dashboard</h1>
+  <p class="page-sub">Real-time overview · November 2024</p>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-icon" style="background:var(--blue3);color:var(--blue)"><i class="ti ti-building-store" aria-hidden="true"></i></div><div class="kpi-label">Total Vendors</div><div class="kpi-value">7</div><div class="kpi-delta up">↑ 2 this month</div></div>
+    <div class="kpi"><div class="kpi-icon" style="background:var(--amber3);color:var(--amber)"><i class="ti ti-file-description" aria-hidden="true"></i></div><div class="kpi-label">Active RFQs</div><div class="kpi-value">4</div><div class="kpi-delta up">1 pending responses</div></div>
+    <div class="kpi"><div class="kpi-icon" style="background:var(--red3);color:var(--red)"><i class="ti ti-clock" aria-hidden="true"></i></div><div class="kpi-label">Pending Approvals</div><div class="kpi-value">2</div><div class="kpi-delta dn">Needs action</div></div>
+    <div class="kpi"><div class="kpi-icon" style="background:var(--green3);color:var(--green)"><i class="ti ti-receipt" aria-hidden="true"></i></div><div class="kpi-label">Purchase Orders</div><div class="kpi-value">2</div><div class="kpi-delta up">₹9.6L total</div></div>
+    <div class="kpi"><div class="kpi-icon" style="background:var(--teal3);color:var(--teal)"><i class="ti ti-file-invoice" aria-hidden="true"></i></div><div class="kpi-label">Invoices</div><div class="kpi-value">2</div><div class="kpi-delta up">1 paid · 1 pending</div></div>
+    <div class="kpi"><div class="kpi-icon" style="background:var(--purple3);color:var(--purple)"><i class="ti ti-coin" aria-hidden="true"></i></div><div class="kpi-label">Total Spend</div><div class="kpi-value">₹68L</div><div class="kpi-delta up">↑ 12% MoM</div></div>
+    <div class="kpi"><div class="kpi-icon" style="background:var(--amber3);color:var(--amber)"><i class="ti ti-messages" aria-hidden="true"></i></div><div class="kpi-label">Pending Responses</div><div class="kpi-value">3</div><div class="kpi-delta dn">From vendors</div></div>
+    <div class="kpi"><div class="kpi-icon" style="background:var(--red3);color:var(--red)"><i class="ti ti-file-dollar" aria-hidden="true"></i></div><div class="kpi-label">Pending Invoices</div><div class="kpi-value">1</div><div class="kpi-delta dn">₹5.5L due</div></div>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-header"><span class="card-title"><i class="ti ti-route" aria-hidden="true" style="margin-right:6px;color:var(--blue)"></i>Procurement Workflow</span><span style="font-size:11px;color:var(--txt3)">Click any step to learn more</span></div>
+    ${flowDiagram(1)}
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Monthly Spend Trend</span></div>
+      <div style="position:relative;width:100%;height:175px"><canvas id="trendChart" role="img" aria-label="Monthly procurement spend trend">Spend: Jul 12L, Aug 18L, Sep 15L, Oct 22L, Nov 19L</canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Vendor Distribution</span></div>
+      <div style="position:relative;width:100%;height:145px"><canvas id="spendChart" role="img" aria-label="Vendor spending breakdown">Spending by vendor category</canvas></div>
+      <div id="spendLegend" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:11px;color:var(--txt2)"></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">RFQ Conversion Funnel</span></div>
+      <div id="funnelChart"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Recent Activity</span><span class="card-action" onclick="showPage('activity')">View all →</span></div>
+      ${activities.slice(0,5).map(a=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0"></div>
+        <div style="flex:1"><div style="font-size:12px">${a.action}</div><div style="font-size:11px;color:var(--txt3)">${a.user} · ${a.date} ${a.time}</div></div>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Quick Actions</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="showPage('rfqs')"><i class="ti ti-plus" aria-hidden="true"></i> New RFQ</button>
+      <button class="btn btn-secondary" onclick="showPage('vendors')"><i class="ti ti-building-store" aria-hidden="true"></i> Add Vendor</button>
+      <button class="btn btn-secondary" onclick="showPage('compare')"><i class="ti ti-layout-columns" aria-hidden="true"></i> Compare Quotes</button>
+      <button class="btn btn-secondary" onclick="showPage('invoices')"><i class="ti ti-file-invoice" aria-hidden="true"></i> Generate Invoice</button>
+      <button class="btn btn-secondary" onclick="showPage('approvals')"><i class="ti ti-check" aria-hidden="true"></i> Review Approvals</button>
+    </div>
+  </div>`;
+}
+
+/* VENDORS */
+function renderVendors(){
+  return`
+  <h1 class="page-title">Vendor Management</h1>
+  <p class="page-sub">Manage vendor registry, contacts and performance ratings</p>
+  <div class="search-bar">
+    <input class="search-input" placeholder="Search vendors..." id="vendorSearch" oninput="filterVendors(this.value)">
+    <select class="input" style="width:150px" onchange="filterVendorCat(this.value)">
+      <option value="">All Categories</option>
+      <option>IT Equipment</option><option>Office Furniture</option><option>Networking</option><option>Software</option><option>Printers</option>
+    </select>
+    <button class="btn btn-primary" onclick="openModal('vendorModal')"><i class="ti ti-plus" aria-hidden="true"></i> Add Vendor</button>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table><thead><tr><th>ID</th><th>Vendor</th><th>Category</th><th>Contact</th><th>Rating</th><th>Spend</th><th>On-Time</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="vendorTbody">${renderVendorRows(vendors)}</tbody>
+      </table>
+    </div>
+  </div>
+  <div id="vendorModal" style="display:none">
+    <div class="modal-overlay" onclick="closeModal('vendorModal')">
+      <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header"><span class="modal-title">Add New Vendor</span><button class="modal-close" onclick="closeModal('vendorModal')">✕</button></div>
+        <div class="modal-body">
+          <div class="form-row"><div><label class="label">Vendor Name</label><input class="input" id="nv_name" placeholder="TechPro Solutions"></div><div><label class="label">Company</label><input class="input" placeholder="TechPro Pvt Ltd"></div></div>
+          <div class="form-row"><div><label class="label">Category</label><select class="input"><option>IT Equipment</option><option>Office Furniture</option><option>Networking</option><option>Software</option><option>Printers</option></select></div><div><label class="label">GST Number</label><input class="input" placeholder="27AABCT1234M1Z5"></div></div>
+          <div class="form-row"><div><label class="label">Contact Person</label><input class="input" placeholder="Full Name"></div><div><label class="label">Email</label><input class="input" type="email" placeholder="email@company.in"></div></div>
+          <div class="form-row"><div><label class="label">Phone</label><input class="input" placeholder="+91 98765 43210"></div><div><label class="label">Status</label><select class="input"><option>Active</option><option>Inactive</option></select></div></div>
+          <div class="form-group"><label class="label">Address</label><textarea class="input" rows="2" placeholder="Full address with city, state, PIN"></textarea></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeModal('vendorModal')">Cancel</button>
+          <button class="btn btn-primary" onclick="mockApiCall('Adding vendor',()=>{toast('Vendor added successfully!');closeModal(\'vendorModal\')})">Save Vendor</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function renderVendorRows(vlist){
+  return vlist.map(v=>`<tr>
+    <td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--txt3)">${v.id}</span></td>
+    <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar-sm" style="background:var(--blue3);color:var(--blue)">${v.name.slice(0,2).toUpperCase()}</div><div><div style="font-weight:500;font-size:12px">${v.name}</div><div style="font-size:11px;color:var(--txt3)">${v.gst}</div></div></div></td>
+    <td><span class="tag">${v.category}</span></td>
+    <td><div style="font-size:12px">${v.contact}</div><div style="font-size:11px;color:var(--txt3)">${v.email}</div></td>
+    <td><span style="color:var(--amber);font-size:12px">${'★'.repeat(Math.floor(v.rating))}</span> <span style="font-size:11px">${v.rating}</span></td>
+    <td style="font-family:'DM Mono',monospace;font-size:11px">${fmt(v.spend)}</td>
+    <td><span style="font-size:12px;color:${v.onTime>=90?'var(--green)':v.onTime>=80?'var(--amber)':'var(--red)'}">${v.onTime}%</span></td>
+    <td>${statusBadge(v.status)}</td>
+    <td><div style="display:flex;gap:4px"><button class="btn btn-secondary btn-sm" onclick="toast('Viewing ${v.name} — ${v.orders} orders, rating ${v.rating}')">View</button><button class="btn btn-secondary btn-sm">Edit</button></div></td>
+  </tr>`).join('');
+}
+function filterVendors(q){document.getElementById('vendorTbody').innerHTML=renderVendorRows(vendors.filter(v=>v.name.toLowerCase().includes(q.toLowerCase())||v.category.toLowerCase().includes(q.toLowerCase())))}
+function filterVendorCat(cat){document.getElementById('vendorTbody').innerHTML=renderVendorRows(cat?vendors.filter(v=>v.category===cat):vendors)}
+
+/* RFQs */
+function renderRFQs(){
+  return`
+  <h1 class="page-title">${currentRole==='vendor'?'Available RFQs':'RFQ Management'}</h1>
+  <p class="page-sub">Create, publish and manage procurement requests</p>
+  ${currentRole!=='vendor'?`<div style="display:flex;gap:8px;margin-bottom:14px"><button class="btn btn-primary" onclick="openModal('createRFQModal')"><i class="ti ti-plus" aria-hidden="true"></i> Create RFQ</button></div>`:''}
+  <div class="card">
+    <div class="table-wrap">
+      <table><thead><tr><th>RFQ No.</th><th>Title</th><th>Product</th><th>Budget</th><th>Priority</th><th>Deadline</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>${rfqs.map(r=>`<tr>
+          <td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">${r.id}</span></td>
+          <td><div style="font-weight:500;font-size:12px">${r.title}</div><div style="font-size:11px;color:var(--txt3)">${r.qty} ${r.unit}</div></td>
+          <td style="font-size:12px">${r.product}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px">${fmt(r.budget)}</td>
+          <td>${r.priority==='High'?'<span class="badge badge-red">High</span>':r.priority==='Medium'?'<span class="badge badge-amber">Medium</span>':'<span class="badge badge-gray">Low</span>'}</td>
+          <td style="font-size:11px">${r.deadline}</td>
+          <td>${statusBadge(r.status)}</td>
+          <td><div style="display:flex;gap:4px">
+            ${currentRole==='vendor'?`<button class="btn btn-primary btn-sm" onclick="showPage('quotations')">Submit Quote</button>`:`<button class="btn btn-secondary btn-sm" onclick="viewRFQTimeline('${r.id}')">Timeline</button><button class="btn btn-secondary btn-sm">Edit</button>`}
+          </div></td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>
+  </div>
+  <div id="createRFQModal" style="display:none">
+    <div class="modal-overlay" onclick="closeModal('createRFQModal')">
+      <div class="modal modal-wide" onclick="event.stopPropagation()">
+        <div class="modal-header"><span class="modal-title">Create New RFQ</span><button class="modal-close" onclick="closeModal('createRFQModal')">✕</button></div>
+        <div class="modal-body">
+          <div class="form-row"><div><label class="label">RFQ Number</label><input class="input" value="RFQ-2024-006" readonly></div><div><label class="label">Priority</label><select class="input"><option>High</option><option>Medium</option><option>Low</option></select></div></div>
+          <div class="form-group"><label class="label">RFQ Title</label><input class="input" placeholder="e.g. Annual Stationery Procurement 2025"></div>
+          <div class="form-group"><label class="label">Description</label><textarea class="input" placeholder="Detailed procurement requirement description..."></textarea></div>
+          <div class="form-row"><div><label class="label">Product / Service</label><input class="input" placeholder="e.g. A4 Paper Reams"></div><div><label class="label">Category</label><select class="input"><option>IT Equipment</option><option>Office Furniture</option><option>Networking</option><option>Software</option><option>Stationery</option></select></div></div>
+          <div class="form-row"><div><label class="label">Quantity</label><input class="input" type="number" placeholder="50"></div><div><label class="label">Unit</label><select class="input"><option>Units</option><option>Sets</option><option>Licenses</option><option>Pcs</option><option>Kg</option></select></div></div>
+          <div class="form-row"><div><label class="label">Budget (₹)</label><input class="input" type="number" placeholder="500000"></div><div><label class="label">Submission Deadline</label><input class="input" type="date"></div></div>
+          <div class="form-group">
+            <label class="label">Assign Vendors</label>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">${vendors.filter(v=>v.status==='Active').map(v=>`<label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:12px;background:var(--bg3);padding:4px 8px;border-radius:5px;border:1px solid var(--border)"><input type="checkbox"> ${v.name}</label>`).join('')}</div>
+          </div>
+          <div class="form-group">
+            <label class="label">Attachments</label>
+            <div class="upload-zone" id="rfqDropZone" onclick="document.getElementById('rfqFileInput').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event)">
+              <input type="file" id="rfqFileInput" multiple accept=".pdf,.docx,.xlsx,.png,.jpg,.jpeg" onchange="handleFileSelect(this.files)">
+              <i class="ti ti-cloud-upload" style="font-size:28px;margin-bottom:6px" aria-hidden="true"></i>
+              <div style="font-size:13px;font-weight:500">Drop files here or click to browse</div>
+              <div style="font-size:11px;margin-top:4px">Supports: PDF, DOCX, XLSX, PNG, JPG</div>
+            </div>
+            <div class="file-list" id="rfqFileList"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeModal('createRFQModal')">Cancel</button>
+          <button class="btn btn-secondary" onclick="mockApiCall('Saving draft',()=>{toast('RFQ saved as draft');closeModal(\'createRFQModal\')})">Save Draft</button>
+          <button class="btn btn-primary" onclick="mockApiCall('Publishing RFQ',()=>{toast('RFQ published! Vendors notified via email.');closeModal(\'createRFQModal\')})"><i class="ti ti-send" aria-hidden="true"></i> Publish RFQ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="rfqTimelineModal" style="display:none">
+    <div class="modal-overlay" onclick="closeModal('rfqTimelineModal')">
+      <div class="modal" onclick="event.stopPropagation()" style="width:420px">
+        <div class="modal-header"><span class="modal-title">Procurement Timeline</span><button class="modal-close" onclick="closeModal('rfqTimelineModal')">✕</button></div>
+        <div class="modal-body" id="rfqTimelineBody"></div>
+      </div>
+    </div>
+  </div>`;
+}
+function viewRFQTimeline(rfqId){
+  const stepsMap={'RFQ-2024-001':2,'RFQ-2024-002':3,'RFQ-2024-003':6,'RFQ-2024-004':0,'RFQ-2024-005':6};
+  document.getElementById('rfqTimelineBody').innerHTML=workflowTimeline(stepsMap[rfqId]||0);
+  openModal('rfqTimelineModal');
+}
+
+/* FILE UPLOAD */
+function handleFileSelect(files){
+  Array.from(files).forEach(f=>addFile(f));
+}
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('rfqDropZone').classList.remove('dragover');
+  handleFileSelect(e.dataTransfer.files);
+}
+function addFile(file){
+  if(uploadedFiles.some(f=>f.name===file.name)){toast('File already added','error');return}
+  uploadedFiles.push(file);
+  renderFileList();
+}
+function removeFile(name){
+  uploadedFiles=uploadedFiles.filter(f=>f.name!==name);
+  renderFileList();
+}
+function renderFileList(){
+  const list=document.getElementById('rfqFileList');
+  if(!list)return;
+  list.innerHTML=uploadedFiles.map(f=>`
+    <div class="file-item">
+      <i class="ti ti-file" style="color:var(--blue);font-size:16px" aria-hidden="true"></i>
+      <span class="file-item-name">${f.name}</span>
+      <span class="file-item-size">${(f.size/1024).toFixed(1)}KB</span>
+      <button class="file-remove" onclick="removeFile('${f.name}')">✕</button>
+    </div>`).join('');
+}
+
+/* QUOTATIONS */
+function renderQuotations(){
+  return`
+  <h1 class="page-title">Quotation Management</h1>
+  <p class="page-sub">${currentRole==='vendor'?'Submit and track your quotations':'Review all vendor quotations'}</p>
+  ${currentRole==='vendor'?`
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-header"><span class="card-title">Submit New Quotation</span></div>
+    <div class="form-row"><div><label class="label">RFQ Reference</label><select class="input">${rfqs.filter(r=>r.status==='Published').map(r=>`<option>${r.id} – ${r.title}</option>`).join('')}</select></div><div><label class="label">Vendor</label><input class="input" value="TechPro Solutions" readonly></div></div>
+    <div class="form-row"><div><label class="label">Unit Price (₹)</label><input class="input" type="number" placeholder="45000" id="qUnitPrice" oninput="calcQuoteTotal()"></div><div><label class="label">Total Price (₹)</label><input class="input" type="number" placeholder="Auto-calculated" id="qTotalPrice" readonly></div></div>
+    <div class="form-row"><div><label class="label">Delivery Timeline (days)</label><input class="input" type="number" placeholder="14"></div><div><label class="label">Warranty</label><input class="input" placeholder="e.g. 3 Years on-site"></div></div>
+    <div class="form-group"><label class="label">Notes / Specifications</label><textarea class="input" placeholder="Detailed product specs, brand, model, inclusions..."></textarea></div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn btn-secondary"><i class="ti ti-device-floppy" aria-hidden="true"></i> Save Draft</button>
+      <button class="btn btn-primary" onclick="mockApiCall('Submitting quotation',()=>toast('Quotation submitted successfully! Procurement team notified.'))"><i class="ti ti-send" aria-hidden="true"></i> Submit Quotation</button>
+    </div>
+  </div>`:''}
+  <div class="card">
+    <div class="card-header"><span class="card-title">Submitted Quotations</span></div>
+    <div class="table-wrap">
+      <table><thead><tr><th>Quote ID</th><th>RFQ</th><th>Vendor</th><th>Unit Price</th><th>Total</th><th>Delivery</th><th>Warranty</th><th>Score</th><th>Status</th></tr></thead>
+        <tbody>${quotations.map(q=>{const v=vendors.find(x=>x.id===q.vendorId)||{name:'Unknown'};const r=rfqs.find(x=>x.id===q.rfqId)||{title:'Unknown'};return`<tr>
+          <td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--txt3)">${q.id}</span></td>
+          <td><div style="font-size:12px">${r.title}</div><div style="font-size:11px;color:var(--txt3)">${q.rfqId}</div></td>
+          <td>${v.name}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px">${fmt(q.unitPrice)}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px">${fmt(q.total)}</td>
+          <td>${q.delivery} days</td>
+          <td>${q.warranty}</td>
+          <td><span style="font-weight:600;color:${q.score>=90?'var(--green)':q.score>=80?'var(--blue)':'var(--amber)'}">${q.score}</span></td>
+          <td>${statusBadge(q.status)}</td>
+        </tr>`}).join('')}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function calcQuoteTotal(){
+  const up=parseFloat(document.getElementById('qUnitPrice')?.value||0);
+  const el=document.getElementById('qTotalPrice');
+  if(el&&up>0)el.value=Math.round(up*25);
+}
+
+/* COMPARE */
+function renderCompare(){
+  const rfqQ=quotations.filter(q=>q.rfqId==='RFQ-2024-001');
+  const bestP=Math.min(...rfqQ.map(q=>q.unitPrice));
+  const bestD=Math.min(...rfqQ.map(q=>q.delivery));
+  const best=rfqQ.reduce((a,b)=>a.score>b.score?a:b);
+  return`
+  <h1 class="page-title">Quotation Comparison</h1>
+  <p class="page-sub">Side-by-side vendor analysis for RFQ-2024-001: Laptop Procurement Q4</p>
+  <div class="ai-rec">
+    <div class="ai-rec-title"><i class="ti ti-robot" aria-hidden="true"></i> AI Recommendation Engine · Composite Scoring</div>
+    <div class="ai-rec-body">
+      <strong style="color:var(--blue)">${vendors.find(v=>v.id===best.vendorId)?.name}</strong> is the <strong>Best Value Vendor</strong> with a score of <strong>${best.score}/100</strong>.
+      Formula: Price 40% + Delivery Speed 25% + Vendor Rating 25% + Warranty 10%.
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${rfqQ.map(q=>{const v=vendors.find(x=>x.id===q.vendorId);return`<div style="background:rgba(255,255,255,.04);border-radius:7px;padding:10px">
+          <div style="font-size:12px;font-weight:500;margin-bottom:6px;color:var(--txt)">${v?.name} <span style="font-size:11px;color:var(--txt3)">· Score: ${q.score}/100</span></div>
+          <div class="score-bar"><span class="score-lbl">Price Value</span><div class="score-track"><div class="score-fill-bar" style="width:${q.unitPrice===bestP?100:Math.round(bestP/q.unitPrice*100)}%;background:var(--blue)"></div></div><span class="score-val" style="color:var(--blue)">${q.unitPrice===bestP?100:Math.round(bestP/q.unitPrice*100)}</span></div>
+          <div class="score-bar"><span class="score-lbl">Delivery</span><div class="score-track"><div class="score-fill-bar" style="width:${q.delivery===bestD?100:Math.round(bestD/q.delivery*100)}%;background:var(--green)"></div></div><span class="score-val" style="color:var(--green)">${q.delivery===bestD?100:Math.round(bestD/q.delivery*100)}</span></div>
+          <div class="score-bar"><span class="score-lbl">Rating</span><div class="score-track"><div class="score-fill-bar" style="width:${Math.round((v?.rating||0)/5*100)}%;background:var(--amber)"></div></div><span class="score-val" style="color:var(--amber)">${Math.round((v?.rating||0)/5*100)}</span></div>
+        </div>`}).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Comparison Table</span><button class="btn btn-secondary btn-sm" onclick="exportCSV()"><i class="ti ti-download" aria-hidden="true"></i> Export CSV</button></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Parameter</th>${rfqQ.map(q=>`<th>${vendors.find(v=>v.id===q.vendorId)?.name}<br><span style="font-weight:400;color:var(--txt3);font-size:10px">${q.id}</span></th>`).join('')}<th>Best</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--txt3)">Unit Price</td>${rfqQ.map(q=>`<td style="background:${q.unitPrice===bestP?'var(--green3)':'transparent'};color:${q.unitPrice===bestP?'var(--green)':'var(--txt)'};font-family:'DM Mono',monospace">${fmt(q.unitPrice)}${q.unitPrice===bestP?' ✓':''}</td>`).join('')}<td>${fmt(bestP)}</td></tr>
+          <tr><td style="color:var(--txt3)">Total Value</td>${rfqQ.map(q=>`<td style="font-family:'DM Mono',monospace">${fmt(q.total)}</td>`).join('')}<td>${fmt(Math.min(...rfqQ.map(q=>q.total)))}</td></tr>
+          <tr><td style="color:var(--txt3)">GST (18%)</td>${rfqQ.map(q=>`<td style="font-family:'DM Mono',monospace">${fmt(q.tax)}</td>`).join('')}<td>—</td></tr>
+          <tr><td style="color:var(--txt3)">Delivery Days</td>${rfqQ.map(q=>`<td style="color:${q.delivery===bestD?'var(--green)':'var(--txt)'}">${q.delivery} days${q.delivery===bestD?' ✓':''}</td>`).join('')}<td>${bestD} days</td></tr>
+          <tr><td style="color:var(--txt3)">Warranty</td>${rfqQ.map(q=>`<td>${q.warranty}</td>`).join('')}<td>—</td></tr>
+          <tr><td style="color:var(--txt3)">Vendor Rating</td>${rfqQ.map(q=>{const v=vendors.find(x=>x.id===q.vendorId);return`<td><span style="color:var(--amber)">${'★'.repeat(Math.floor(v?.rating||0))}</span> ${v?.rating||'—'}</td>`}).join('')}<td>—</td></tr>
+          <tr><td style="color:var(--txt3)">AI Score</td>${rfqQ.map(q=>`<td style="font-weight:600;color:${q.score===best.score?'var(--green)':'var(--txt)'}">${q.score}/100${q.score===best.score?' 🏆':''}</td>`).join('')}<td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="mockApiCall('Routing to approval workflow',()=>{toast('Best quote accepted! Routed to approval workflow.');showPage(\'approvals\')})"><i class="ti ti-check" aria-hidden="true"></i> Accept Best Quote & Send for Approval</button>
+      <button class="btn btn-secondary"><i class="ti ti-mail" aria-hidden="true"></i> Request Revised Quotes</button>
+    </div>
+  </div>`;
+}
+
+/* APPROVALS */
+function renderApprovals(){
+  return`
+  <h1 class="page-title">Approval Workflow</h1>
+  <p class="page-sub">Review and process procurement approvals</p>
+  <div class="grid3" style="margin-bottom:14px">
+    <div class="kpi"><div class="kpi-label">Pending Review</div><div class="kpi-value" style="color:var(--amber)">2</div></div>
+    <div class="kpi"><div class="kpi-label">Approved This Month</div><div class="kpi-value" style="color:var(--green)">1</div></div>
+    <div class="kpi"><div class="kpi-label">Avg Approval Time</div><div class="kpi-value">2.3 days</div></div>
+  </div>
+  ${approvals.map(a=>`
+  <div class="card" style="margin-bottom:12px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--txt3)">${a.id}</span>${statusBadge(a.status)}</div>
+        <div style="font-size:14px;font-weight:600;margin-bottom:2px">${a.title}</div>
+        <div style="font-size:11px;color:var(--txt3)">RFQ: ${a.rfqId} · ${a.submittedBy} · ${a.submittedOn}</div>
+      </div>
+      <div style="text-align:right"><div style="font-size:18px;font-weight:700">${fmt(a.amount)}</div><div style="font-size:11px;color:var(--txt3)">Requested Budget</div></div>
+    </div>
+    <div style="margin-bottom:12px">${workflowTimeline({'APR-001':3,'APR-002':6,'APR-003':2}[a.id]||2)}</div>
+    ${a.remarks?`<div style="background:var(--green3);border-radius:6px;padding:10px;font-size:12px;color:var(--green);margin-bottom:10px;border-left:3px solid var(--green2)"><i class="ti ti-message" aria-hidden="true"></i> ${a.remarks}</div>`:''}
+    ${(currentRole==='manager'||currentRole==='admin')&&a.status!=='Approved'?`
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <div style="flex:1"><label class="label">Remarks</label><input class="input" placeholder="Add approval remarks..." id="remark_${a.id}"></div>
+      <div style="display:flex;gap:6px;align-self:flex-end">
+        <button class="btn btn-success btn-sm" onclick="mockApiCall('Processing approval',()=>{toast('✅ Approved! PO can now be generated.');showPage(\'approvals\')})"><i class="ti ti-check" aria-hidden="true"></i> Approve</button>
+        <button class="btn btn-danger btn-sm" onclick="toast('Approval rejected. Officer notified.','error')"><i class="ti ti-x" aria-hidden="true"></i> Reject</button>
+        <button class="btn btn-amber btn-sm"><i class="ti ti-refresh" aria-hidden="true"></i> Request Changes</button>
+      </div>
+    </div>`:''}
+  </div>`).join('')}`;
+}
+
+/* PURCHASE ORDERS */
+function renderPOs(){
+  return`
+  <h1 class="page-title">Purchase Orders</h1>
+  <p class="page-sub">Manage generated purchase orders and delivery tracking</p>
+  <div style="margin-bottom:14px;display:flex;gap:8px">
+    <button class="btn btn-primary" onclick="mockApiCall('Generating PO',()=>toast('New PO-2024-003 generated from approved quote!'))"><i class="ti ti-plus" aria-hidden="true"></i> Generate PO</button>
+    <button class="btn btn-secondary" onclick="exportCSV()"><i class="ti ti-download" aria-hidden="true"></i> Export CSV</button>
+  </div>
+  <div class="card" style="margin-bottom:14px">
+    <div class="table-wrap">
+      <table><thead><tr><th>PO No.</th><th>Vendor</th><th>Items</th><th>Qty</th><th>Subtotal</th><th>GST</th><th>Total</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>${purchaseOrders.map(po=>`<tr>
+          <td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">${po.id}</span></td>
+          <td style="font-size:12px">${po.vendorName}</td>
+          <td style="font-size:11px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${po.items}</td>
+          <td>${po.qty}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px">${fmt(po.subtotal)}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px">${fmt(po.tax)}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;font-weight:600">${fmt(po.total)}</td>
+          <td style="font-size:11px">${po.date}</td>
+          <td>${statusBadge(po.status)}</td>
+          <td><div style="display:flex;gap:4px">
+            <button class="btn btn-secondary btn-sm" onclick="viewPO('${po.id}')"><i class="ti ti-eye" aria-hidden="true"></i></button>
+            <button class="btn btn-secondary btn-sm" onclick="downloadPOPDF('${po.id}')"><i class="ti ti-download" aria-hidden="true"></i></button>
+            <button class="btn btn-primary btn-sm" onclick="mockApiCall('Generating invoice',()=>{toast('Invoice generated!');showPage(\'invoices\')})">Invoice →</button>
+          </div></td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Procurement Timeline for PO-2024-001</span></div>
+    ${workflowTimeline(6)}
+  </div>
+  <div id="poViewModal" style="display:none">
+    <div class="modal-overlay" onclick="closeModal('poViewModal')">
+      <div class="modal modal-wide" onclick="event.stopPropagation()">
+        <div class="modal-header"><span class="modal-title">Purchase Order Preview</span><button class="modal-close" onclick="closeModal('poViewModal')">✕</button></div>
+        <div class="modal-body" id="poModalBody"></div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="printDoc()"><i class="ti ti-printer" aria-hidden="true"></i> Print</button>
+          <button class="btn btn-primary" onclick="downloadPOPDF('PO-2024-001')"><i class="ti ti-download" aria-hidden="true"></i> Download PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function viewPO(id){
+  const po=purchaseOrders.find(p=>p.id===id);
+  document.getElementById('poModalBody').innerHTML=buildPODoc(po);
+  openModal('poViewModal');
+}
+function buildPODoc(po){
+  return`<div class="doc-white" id="printDoc">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+      <div><div style="font-size:24px;font-weight:800;color:#1a1a2e">VB</div><div style="font-size:18px;font-weight:700;color:#1a1a2e">VendorBridge ERP</div><div style="font-size:11px;color:#666">Smart Procurement. Smarter Decisions.</div></div>
+      <div style="text-align:right"><div style="font-size:20px;font-weight:700;color:#2563eb">PURCHASE ORDER</div><div style="font-family:monospace;font-size:14px;color:#444">${po.id}</div><div style="font-size:11px;color:#888">Date: ${po.date}</div></div>
+    </div>
+    <div style="height:2px;background:#2563eb;margin:12px 0"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:11px;color:#555;margin-bottom:14px">
+      <div><strong style="color:#222">Bill To:</strong><br>Your Organization Pvt Ltd<br>Procurement Department<br>GSTIN: 27AADCA1234B1Z5<br>Mumbai, Maharashtra</div>
+      <div><strong style="color:#222">Vendor:</strong><br>${po.vendorName}<br>GSTIN: 29AAACN3456O1Z1<br>Delivery By: ${po.deliveryDate}</div>
+    </div>
+    <table><thead><tr><th>#</th><th>Description</th><th>Qty</th><th>Unit Cost</th><th>Amount</th></tr></thead>
+    <tbody><tr><td>1</td><td>${po.items}</td><td>${po.qty}</td><td>₹${po.unitCost.toLocaleString('en-IN')}</td><td>₹${po.subtotal.toLocaleString('en-IN')}</td></tr></tbody>
+    <tfoot>
+      <tr><td colspan="4" style="text-align:right;padding:5px 8px;color:#555">Subtotal:</td><td>₹${po.subtotal.toLocaleString('en-IN')}</td></tr>
+      <tr><td colspan="4" style="text-align:right;padding:5px 8px;color:#555">CGST (9%):</td><td>₹${Math.round(po.tax/2).toLocaleString('en-IN')}</td></tr>
+      <tr><td colspan="4" style="text-align:right;padding:5px 8px;color:#555">SGST (9%):</td><td>₹${Math.round(po.tax/2).toLocaleString('en-IN')}</td></tr>
+      <tr class="doc-total"><td colspan="4" style="text-align:right;padding:6px 8px">GRAND TOTAL:</td><td>₹${po.total.toLocaleString('en-IN')}</td></tr>
+    </tfoot></table>
+    <div class="sig-area">
+      <div class="sig-box"><div class="sig-line"></div><div class="sig-label">Prepared By</div></div>
+      <div class="sig-box"><div class="sig-line"></div><div class="sig-label">Approved By</div></div>
+      <div class="sig-box"><div class="sig-line"></div><div class="sig-label">Vendor Signature</div></div>
+    </div>
+    <div class="doc-footer">System-generated PO from VendorBridge ERP. Authorized signatory required for procurement above ₹5,00,000. For queries: procurement@company.in</div>
+  </div>`;
+}
+function downloadPOPDF(id){
+  toast('PO PDF downloaded — ' + id + '.pdf');
+}
+function printDoc(){
+  window.print();
+}
+
+/* INVOICES */
+function renderInvoices(){
+  return`
+  <h1 class="page-title">Invoice Management</h1>
+  <p class="page-sub">Generate, download, print and email procurement invoices</p>
+  <div class="card" style="margin-bottom:14px">
+    <div class="table-wrap">
+      <table><thead><tr><th>Invoice No.</th><th>PO Ref.</th><th>Vendor</th><th>Invoice Date</th><th>Due Date</th><th>Subtotal</th><th>GST</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>${invoices.map(inv=>`<tr>
+          <td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">${inv.id}</span></td>
+          <td><span style="font-family:'DM Mono',monospace;font-size:11px">${inv.poId}</span></td>
+          <td style="font-size:12px">${inv.vendorName}</td>
+          <td style="font-size:11px">${inv.date}</td>
+          <td style="font-size:11px">${inv.dueDate}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px">${fmt(inv.subtotal)}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px">${fmt(inv.tax)}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;font-weight:600">${fmt(inv.total)}</td>
+          <td>${statusBadge(inv.status)}</td>
+          <td><div style="display:flex;gap:4px">
+            <button class="btn btn-secondary btn-sm" onclick="viewInvoice('${inv.id}')" title="View"><i class="ti ti-eye" aria-hidden="true"></i></button>
+            <button class="btn btn-secondary btn-sm" onclick="downloadInvPDF('${inv.id}')" title="Download PDF"><i class="ti ti-download" aria-hidden="true"></i></button>
+            <button class="btn btn-secondary btn-sm" onclick="printInvoice('${inv.id}')" title="Print"><i class="ti ti-printer" aria-hidden="true"></i></button>
+            <button class="btn btn-primary btn-sm" onclick="openEmailModal('${inv.id}')"><i class="ti ti-mail" aria-hidden="true"></i> Email</button>
+          </div></td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>
+  </div>
+  <div id="invoiceViewModal" style="display:none">
+    <div class="modal-overlay" onclick="closeModal('invoiceViewModal')">
+      <div class="modal modal-wide" onclick="event.stopPropagation()">
+        <div class="modal-header"><span class="modal-title">Invoice Preview</span><button class="modal-close" onclick="closeModal('invoiceViewModal')">✕</button></div>
+        <div class="modal-body" id="invViewBody"></div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="window.print()"><i class="ti ti-printer" aria-hidden="true"></i> Print</button>
+          <button class="btn btn-secondary" onclick="openEmailFromModal()"><i class="ti ti-mail" aria-hidden="true"></i> Email</button>
+          <button class="btn btn-primary" onclick="toast('Invoice PDF downloaded')"><i class="ti ti-download" aria-hidden="true"></i> Download PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="emailInvModal" style="display:none">
+    <div class="modal-overlay" onclick="closeModal('emailInvModal')">
+      <div class="modal" onclick="event.stopPropagation()" style="width:480px">
+        <div class="modal-header"><span class="modal-title"><i class="ti ti-mail" style="margin-right:6px;color:var(--blue)" aria-hidden="true"></i>Send Invoice via Email</span><button class="modal-close" onclick="closeModal('emailInvModal')">✕</button></div>
+        <div class="modal-body">
+          <div class="form-group"><label class="label">To (Recipient Email)</label><input class="input" id="emailTo" value="suresh@netconn.in"></div>
+          <div class="form-group"><label class="label">CC</label><input class="input" id="emailCc" placeholder="accounts@company.in"></div>
+          <div class="form-group"><label class="label">Subject</label><input class="input" id="emailSubj" value="Invoice from VendorBridge ERP"></div>
+          <div class="form-group"><label class="label">Message</label><textarea class="input" id="emailBody" rows="5">Dear Team,\n\nPlease find attached the invoice for your recent purchase order.\n\nAmount Due: ₹5,48,700\nDue Date: 21 Dec 2024\n\nKindly process payment at the earliest.\n\nRegards,\nProcurement Team\nVendorBridge ERP</textarea></div>
+          <div style="background:var(--bg3);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--txt3);display:flex;align-items:center;gap:6px"><i class="ti ti-paperclip" aria-hidden="true"></i> INV-2024-001.pdf (attached automatically)</div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeModal('emailInvModal')">Cancel</button>
+          <button class="btn btn-primary" onclick="sendInvoiceEmail()"><i class="ti ti-send" aria-hidden="true"></i> Send Email</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+let currentInvId=null;
+function viewInvoice(id){
+  currentInvId=id;
+  const inv=invoices.find(i=>i.id===id);
+  document.getElementById('invViewBody').innerHTML=buildInvoiceDoc(inv);
+  openModal('invoiceViewModal');
+}
+function buildInvoiceDoc(inv){
+  return`<div class="doc-white" id="printDocInv">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+      <div><div style="font-size:24px;font-weight:800;color:#1a1a2e">VB</div><div style="font-size:18px;font-weight:700;color:#1a1a2e">VendorBridge ERP</div><div style="font-size:11px;color:#666">Smart Procurement. Smarter Decisions.</div></div>
+      <div style="text-align:right"><div style="font-size:20px;font-weight:700;color:#059669">TAX INVOICE</div><div style="font-family:monospace;font-size:14px;color:#444">${inv.id}</div><div style="font-size:11px;color:#888">Date: ${inv.date}</div></div>
+    </div>
+    <div style="height:2px;background:#059669;margin:12px 0"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:11px;color:#555;margin-bottom:14px">
+      <div><strong style="color:#222">From (Vendor):</strong><br>${inv.vendorName}<br>Contact: ${inv.contact}<br>GSTIN: ${inv.gst}</div>
+      <div><strong style="color:#222">To (Buyer):</strong><br>Your Organization Pvt Ltd<br>GSTIN: 27AADCA1234B1Z5<br>PO Ref: ${inv.poId} · Due: ${inv.dueDate}</div>
+    </div>
+    <table><thead><tr><th>#</th><th>Description</th><th>Qty</th><th>Rate (₹)</th><th>Amount (₹)</th></tr></thead>
+    <tbody>${inv.items.map((it,i)=>`<tr><td>${i+1}</td><td>${it.desc}</td><td>${it.qty}</td><td>${it.rate.toLocaleString('en-IN')}</td><td>${it.amount.toLocaleString('en-IN')}</td></tr>`).join('')}</tbody>
+    <tfoot>
+      <tr><td colspan="4" style="text-align:right;padding:5px 8px;color:#555">Subtotal:</td><td>₹${inv.subtotal.toLocaleString('en-IN')}</td></tr>
+      <tr><td colspan="4" style="text-align:right;padding:5px 8px;color:#555">CGST (9%):</td><td>₹${Math.round(inv.tax/2).toLocaleString('en-IN')}</td></tr>
+      <tr><td colspan="4" style="text-align:right;padding:5px 8px;color:#555">SGST (9%):</td><td>₹${Math.round(inv.tax/2).toLocaleString('en-IN')}</td></tr>
+      <tr class="doc-total"><td colspan="4" style="text-align:right;padding:6px 8px">TOTAL DUE:</td><td>₹${inv.total.toLocaleString('en-IN')}</td></tr>
+    </tfoot></table>
+    <div style="margin-top:14px;background:#f0fdf4;border-radius:6px;padding:10px;font-size:11px;color:#166534"><strong>Bank Details:</strong> HDFC Bank · A/C: 50200012345678 · IFSC: HDFC0001234 · Account Name: ${inv.vendorName}</div>
+    <div class="sig-area">
+      <div class="sig-box"><div class="sig-line"></div><div class="sig-label">Authorized Signatory</div></div>
+      <div class="sig-box"><div class="sig-line"></div><div class="sig-label">Received By</div></div>
+      <div class="sig-box"><div class="sig-line"></div><div class="sig-label">Finance Approval</div></div>
+    </div>
+    <div class="doc-footer">This is a computer-generated tax invoice. Valid without physical signature as per applicable law. For disputes: finance@vendorbridge.in</div>
+  </div>`;
+}
+function downloadInvPDF(id){toast('Invoice PDF downloaded — '+id+'.pdf')}
+function printInvoice(id){viewInvoice(id);setTimeout(()=>window.print(),400)}
+function openEmailModal(id){currentInvId=id;const inv=invoices.find(i=>i.id===id);document.getElementById('emailTo').value=inv?.email||'vendor@company.in';document.getElementById('emailSubj').value=`Invoice ${id} from VendorBridge ERP`;openModal('emailInvModal')}
+function openEmailFromModal(){closeModal('invoiceViewModal');openModal('emailInvModal')}
+function sendInvoiceEmail(){
+  closeModal('emailInvModal');
+  mockApiCall('Sending invoice email',()=>toast('Invoice sent successfully to '+document.getElementById('emailTo').value));
+}
+
+/* ANALYTICS */
+function renderAnalytics(){
+  return`
+  <h1 class="page-title">Reports & Analytics</h1>
+  <p class="page-sub">Procurement intelligence, KPIs and vendor performance insights</p>
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+    <button class="btn btn-secondary btn-sm" onclick="exportCSV()"><i class="ti ti-file-type-csv" aria-hidden="true"></i> Export CSV</button>
+    <button class="btn btn-secondary btn-sm" onclick="exportExcel()"><i class="ti ti-file-spreadsheet" aria-hidden="true"></i> Export Excel</button>
+    <button class="btn btn-secondary btn-sm" onclick="exportPDF()"><i class="ti ti-file-type-pdf" aria-hidden="true"></i> Export PDF Report</button>
+  </div>
+  <div class="kpi-grid" style="margin-bottom:18px">
+    <div class="kpi"><div class="kpi-label">Avg Cycle Time</div><div class="kpi-value">8.2 days</div><div class="kpi-delta up">↓ vs 11.4 last mo.</div></div>
+    <div class="kpi"><div class="kpi-label">Avg Vendor Response</div><div class="kpi-value">9.4h</div><div class="kpi-delta up">↓ 14% improved</div></div>
+    <div class="kpi"><div class="kpi-label">Approval Success Rate</div><div class="kpi-value">87%</div><div class="kpi-delta up">↑ 3% MoM</div></div>
+    <div class="kpi"><div class="kpi-label">Monthly Spend</div><div class="kpi-value">₹19L</div><div class="kpi-delta dn">↑ 12% vs target</div></div>
+    <div class="kpi"><div class="kpi-label">Active Proc. Value</div><div class="kpi-value">₹44L</div><div class="kpi-delta up">3 active RFQs</div></div>
+    <div class="kpi"><div class="kpi-label">Cost Savings %</div><div class="kpi-value">8.4%</div><div class="kpi-delta up">↑ ₹6.2L saved</div></div>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-header"><span class="card-title">Procurement Workflow Overview</span></div>
+    ${flowDiagram(null)}
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">12-Month Spend Trend</span></div>
+      <div style="position:relative;width:100%;height:190px"><canvas id="trend12Chart" role="img" aria-label="12 month spend trend">Monthly procurement spend</canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Spending by Category</span></div>
+      <div style="position:relative;width:100%;height:160px"><canvas id="catSpendChart" role="img" aria-label="Category spending breakdown">Category spending</canvas></div>
+      <div id="catLegend" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:11px;color:var(--txt2)"></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">RFQ Analytics</span></div>
+      <div style="position:relative;width:100%;height:170px"><canvas id="rfqAnalChart" role="img" aria-label="RFQ open vs closed">RFQ analytics</canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Approval Success Rate</span></div>
+      <div style="position:relative;width:100%;height:170px"><canvas id="approvalChart" role="img" aria-label="Approval outcomes">Approval rates by month</canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Vendor Performance Leaderboard</span></div>
+    ${vendors.filter(v=>v.status==='Active').sort((a,b)=>b.spend-a.spend).map((v,i)=>`
+    <div class="lb-row">
+      <div class="lb-rank ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+      <div class="lb-info">
+        <div class="lb-name">${v.name}</div>
+        <div class="lb-sub">${v.category} · ${v.orders} orders · Response: ${v.responseTime}</div>
+        <div style="display:flex;gap:12px;margin-top:5px">
+          <div class="score-bar" style="flex:1"><span class="score-lbl">Spend</span><div class="score-track"><div class="score-fill-bar" style="width:${Math.round(v.spend/2450000*100)}%;background:var(--blue)"></div></div><span class="score-val" style="color:var(--blue)">${Math.round(v.spend/2450000*100)}%</span></div>
+          <div class="score-bar" style="flex:1"><span class="score-lbl">On-Time</span><div class="score-track"><div class="score-fill-bar" style="width:${v.onTime}%;background:var(--green)"></div></div><span class="score-val" style="color:var(--green)">${v.onTime}%</span></div>
+          <div class="score-bar" style="flex:1"><span class="score-lbl">Win Rate</span><div class="score-track"><div class="score-fill-bar" style="width:${v.winRate}%;background:var(--amber)"></div></div><span class="score-val" style="color:var(--amber)">${v.winRate}%</span></div>
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:16px;font-weight:700">${fmt(v.spend)}</div>
+        <div style="font-size:11px;color:var(--txt3)"><span style="color:var(--amber)">${'★'.repeat(Math.floor(v.rating))}</span> ${v.rating}</div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+/* ACTIVITY LOGS */
+function renderActivity(){
+  return`
+  <h1 class="page-title">Activity Logs</h1>
+  <p class="page-sub">Complete audit trail of all procurement actions and system events</p>
+  <div class="search-bar" style="margin-bottom:12px">
+    <input class="search-input" placeholder="Search actions..." id="actSearch" oninput="filterActivity(this.value)" style="min-width:160px">
+    <select class="input" style="width:130px" id="actModule" onchange="filterActivity(document.getElementById('actSearch').value)">
+      <option value="">All Modules</option>
+      <option>Invoice</option><option>Quotation</option><option>RFQ</option><option>Approval</option><option>Purchase Order</option><option>Vendor</option>
+    </select>
+    <input class="input" type="date" style="width:140px" id="actDate">
+    <button class="btn btn-secondary btn-sm" onclick="exportCSV()"><i class="ti ti-download" aria-hidden="true"></i> Export Logs</button>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table><thead><tr><th>#</th><th>User</th><th>Action</th><th>Module</th><th>Date</th><th>Time</th><th>Status</th></tr></thead>
+        <tbody id="actTbody">${renderActivityRows(activities)}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function renderActivityRows(list){
+  return list.map(a=>`<tr>
+    <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${a.id}</td>
+    <td><div style="display:flex;align-items:center;gap:6px"><div class="avatar-sm" style="background:var(--blue3);color:var(--blue);font-size:10px">${a.user.split(' ').map(x=>x[0]).join('')}</div><span style="font-size:12px">${a.user}</span></div></td>
+    <td style="font-size:12px">${a.action}</td>
+    <td><span class="tag">${a.module}</span></td>
+    <td style="font-size:11px;font-family:'DM Mono',monospace">${a.date}</td>
+    <td style="font-size:11px;color:var(--txt3)">${a.time}</td>
+    <td>${statusBadge(a.status)}</td>
+  </tr>`).join('');
+}
+function filterActivity(q){
+  const mod=document.getElementById('actModule')?.value||'';
+  const list=activities.filter(a=>{
+    const matchQ=!q||a.action.toLowerCase().includes(q.toLowerCase())||a.user.toLowerCase().includes(q.toLowerCase());
+    const matchM=!mod||a.module===mod;
+    return matchQ&&matchM;
+  });
+  document.getElementById('actTbody').innerHTML=renderActivityRows(list);
+}
+
+/* NOTIFICATIONS */
+function renderNotifications(){
+  const notifs=[
+    {icon:'ti-file-description',color:'var(--blue3)',ct:'var(--blue)',text:'New RFQ-2024-001 published. All assigned vendors have been notified.',time:'2 hours ago',unread:true},
+    {icon:'ti-check',color:'var(--green3)',ct:'var(--green)',text:'Network Switch Upgrade (RFQ-2024-003) approved. Proceed with PO generation.',time:'Yesterday, 4:45 PM',unread:true},
+    {icon:'ti-file-invoice',color:'var(--teal3)',ct:'var(--teal)',text:'Invoice INV-2024-002 marked PAID by SoftLicense Hub. Amount: ₹4,13,000',time:'Yesterday, 2:10 PM',unread:true},
+    {icon:'ti-building-store',color:'var(--amber3)',ct:'var(--amber)',text:'New quotation received from NetConnect India for RFQ-2024-003.',time:'3 days ago',unread:false},
+    {icon:'ti-clock',color:'var(--red3)',ct:'var(--red)',text:'REMINDER: RFQ-2024-001 submission deadline is in 2 days.',time:'4 days ago',unread:false},
+  ];
+  return`
+  <h1 class="page-title">Notifications</h1>
+  <p class="page-sub">Stay informed about procurement activities and updates</p>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px">
+      <div style="font-size:12px;color:var(--txt3)">3 unread notifications</div>
+      <button class="btn btn-secondary btn-sm" onclick="toast('All notifications marked as read')">Mark all read</button>
+    </div>
+    ${notifs.map(n=>`<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div style="width:32px;height:32px;border-radius:8px;background:${n.color};display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${n.icon}" style="color:${n.ct};font-size:16px" aria-hidden="true"></i></div>
+      <div style="flex:1"><div style="font-size:12px;color:var(--txt)">${n.text}</div><div style="font-size:11px;color:var(--txt3);margin-top:3px">${n.time}</div></div>
+      ${n.unread?'<div style="width:7px;height:7px;border-radius:50%;background:var(--blue);margin-top:5px;flex-shrink:0"></div>':''}
+    </div>`).join('')}
+  </div>`;
+}
+
+/* USERS */
+function renderUsers(){
+  const users=[
+    {name:'Admin User',email:'admin@vendorbridge.com',role:'Admin',status:'Active',last:'Today, 9:00 AM'},
+    {name:'John Doe',email:'officer@vendorbridge.com',role:'Procurement Officer',status:'Active',last:'Today, 10:30 AM'},
+    {name:'Rahul Sharma',email:'vendor@vendorbridge.com',role:'Vendor',status:'Active',last:'Yesterday'},
+    {name:'Sarah Manager',email:'manager@vendorbridge.com',role:'Manager',status:'Active',last:'Today, 8:15 AM'},
+  ];
+  return`
+  <h1 class="page-title">User Management</h1>
+  <p class="page-sub">Manage system users and role-based access control</p>
+  <div style="margin-bottom:14px"><button class="btn btn-primary" onclick="toast('User invite sent!')"><i class="ti ti-user-plus" aria-hidden="true"></i> Invite User</button></div>
+  <div class="card">
+    <div class="table-wrap">
+      <table><thead><tr><th>User</th><th>Email</th><th>Role</th><th>Status</th><th>Last Login</th><th>Actions</th></tr></thead>
+        <tbody>${users.map(u=>`<tr>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar-sm" style="background:var(--purple3);color:var(--purple)">${u.name.split(' ').map(x=>x[0]).join('')}</div><span style="font-size:12px">${u.name}</span></div></td>
+          <td style="font-size:11px;color:var(--txt3)">${u.email}</td>
+          <td><span class="tag">${u.role}</span></td>
+          <td>${statusBadge(u.status)}</td>
+          <td style="font-size:11px;color:var(--txt3)">${u.last}</td>
+          <td><div style="display:flex;gap:4px"><button class="btn btn-secondary btn-sm" onclick="toast('Editing ${u.name}')">Edit</button><button class="btn btn-danger btn-sm" onclick="toast('${u.name} disabled')">Disable</button></div></td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+/* MOCK API */
+function mockApiCall(label, callback, delay=800){
+  const loadDiv=document.createElement('div');
+  loadDiv.style.cssText='position:fixed;bottom:64px;right:20px;background:var(--bg3);border:1px solid var(--border);color:var(--txt2);padding:10px 16px;border-radius:8px;font-size:12px;z-index:9998;display:flex;align-items:center;gap:8px;font-family:DM Sans,sans-serif';
+  loadDiv.innerHTML=`<i class="ti ti-loader" style="animation:spin .8s linear infinite;font-size:14px" aria-hidden="true"></i> ${label}...`;
+  document.body.appendChild(loadDiv);
+  const style=document.createElement('style');
+  style.textContent='@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}';
+  document.head.appendChild(style);
+  setTimeout(()=>{loadDiv.remove();callback()},delay);
+}
+
+/* EXPORT FUNCTIONS */
+function exportCSV(){
+  const csvData=[
+    ['Vendor Name','Category','Rating','Total Spend','Orders','On-Time %','Win Rate %'],
+    ...vendors.map(v=>[v.name,v.category,v.rating,v.spend,v.orders,v.onTime,v.winRate])
+  ];
+  const csv=csvData.map(r=>r.join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='vendorbridge_export.csv';a.click();
+  toast('CSV exported successfully');
+}
+function exportExcel(){
+  const tsv=[
+    ['Vendor Name','Category','Rating','Total Spend (INR)','Orders','On-Time %'],
+    ...vendors.map(v=>[v.name,v.category,v.rating,v.spend,v.orders,v.onTime])
+  ].map(r=>r.join('\t')).join('\n');
+  const blob=new Blob([tsv],{type:'application/vnd.ms-excel'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='vendorbridge_report.xls';a.click();
+  toast('Excel file exported successfully');
+}
+function exportPDF(){toast('PDF Report exported — VendorBridge_Analytics.pdf')}
+
+/* CHARTS */
+function initCharts(p){
+  if(p==='dashboard'){
+    const tCtx=document.getElementById('trendChart');
+    if(tCtx)charts.trend=new Chart(tCtx,{type:'line',data:{labels:['Jul','Aug','Sep','Oct','Nov'],datasets:[{label:'Spend (₹L)',data:[12,18,15,22,19],borderColor:'#4F8EF7',backgroundColor:'rgba(79,142,247,0.1)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#4F8EF7'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#9AA3BF',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#9AA3BF',font:{size:11},callback:v=>v+'L'}}}}});
+    const sCtx=document.getElementById('spendChart');
+    if(sCtx){const cats=['TechPro','NetConnect','Gadget','OE Essentials','SoftHub'];const vals=[24.5,12.3,9.8,8.9,7.8];const colors=['#4F8EF7','#2ECC9A','#F5A623','#8B5CF6','#06B6D4'];charts.spend=new Chart(sCtx,{type:'doughnut',data:{labels:cats,datasets:[{data:vals,backgroundColor:colors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}}}});document.getElementById('spendLegend').innerHTML=cats.map((c,i)=>`<span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:${colors[i]}"></span>${c}</span>`).join('')}
+    const funnelEl=document.getElementById('funnelChart');
+    if(funnelEl){const steps=[{l:'RFQs Created',v:100},{l:'Quotes Received',v:82},{l:'Quotes Compared',v:68},{l:'Approved',v:55},{l:'PO Generated',v:48},{l:'Invoice Sent',v:40}];const colors=['#4F8EF7','#5B95F7','#6AA3F7','#7BB1F7','#2ECC9A','#1BA87A'];funnelEl.innerHTML=steps.map((s,i)=>`<div class="funnel-step"><div class="funnel-bar-wrap"><div class="funnel-fill" style="width:${s.v}%;background:${colors[i]}"><span style="color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)">${s.l} — ${s.v}%</span></div></div></div>`).join('')}
+  }
+  if(p==='analytics'){
+    const t12=document.getElementById('trend12Chart');
+    if(t12)charts.t12=new Chart(t12,{type:'line',data:{labels:['Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov'],datasets:[{label:'Spend',data:[8,12,9,15,11,18,14,12,18,15,22,19],borderColor:'#4F8EF7',backgroundColor:'rgba(79,142,247,0.07)',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#4F8EF7'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#9AA3BF',font:{size:10},autoSkip:false,maxRotation:45}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#9AA3BF',font:{size:10},callback:v=>v+'L'}}}}});
+    const csCtx=document.getElementById('catSpendChart');
+    if(csCtx){const cats=['IT Equipment','Networking','Gadgets','Furniture','Software'];const vals=[24.5,12.3,9.8,8.9,7.8];const colors=['#4F8EF7','#2ECC9A','#F5A623','#8B5CF6','#06B6D4'];charts.cs=new Chart(csCtx,{type:'pie',data:{labels:cats,datasets:[{data:vals,backgroundColor:colors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});document.getElementById('catLegend').innerHTML=cats.map((c,i)=>`<span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:${colors[i]}"></span>${c}</span>`).join('')}
+    const raCtx=document.getElementById('rfqAnalChart');
+    if(raCtx)charts.ra=new Chart(raCtx,{type:'bar',data:{labels:['Sep','Oct','Nov'],datasets:[{label:'Open',data:[3,5,4],backgroundColor:'#4F8EF7'},{label:'Closed',data:[4,3,2],backgroundColor:'#2ECC9A'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#9AA3BF',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#9AA3BF',font:{size:11}}}}}});
+    const apCtx=document.getElementById('approvalChart');
+    if(apCtx)charts.ap=new Chart(apCtx,{type:'bar',data:{labels:['Sep','Oct','Nov'],datasets:[{label:'Approved',data:[4,5,3],backgroundColor:'#2ECC9A'},{label:'Rejected',data:[1,1,0],backgroundColor:'#F05252'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#9AA3BF',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#9AA3BF',font:{size:11}}}}}});
+  }
+}
+
+/* BOOT */
+checkSession();
+</script>
